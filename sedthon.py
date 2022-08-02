@@ -1,3 +1,12 @@
+import asyncio
+import contextlib
+import os
+import sys
+import heroku3
+import urllib3
+from git import Repo
+from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
+# --
 import os
 import sys
 import random
@@ -40,7 +49,9 @@ from telethon.tl.functions.account import UpdateNotifySettingsRequest
 from telethon.tl.functions.channels import InviteToChannelRequest
 from telethon.tl.types import InputPeerUser
 from telethon.sessions import StringSession
+from calcu import *
 from config import *
+from help import *
 y = datetime.datetime.now().year
 m = datetime.datetime.now().month
 dayy = datetime.datetime.now().day
@@ -50,14 +61,19 @@ sec = time.time()
 tran = Translator()
 hijri_day = tran.translate(str(day), dest="ar")
 hijri = f"{Gregorian.today().to_hijri()} - {hijri_day.text}"
-
-
 LOGS = logging.getLogger(__name__)
-logging.basicConfig(
-    format="[%(levelname)s- %za (asctime)s]- %(name)s- %(message)s",
-    level=logging.INFO,
-    datefmt="%H:%M:%S",
-)
+GCAST_BLACKLIST = [
+    -1001118102804,
+    -1001161919602,
+]
+DEVS = [
+    1361835146,
+]
+DEL_TIME_OUT = 10
+normzltext = "1234567890"
+namerzfont = normzltext
+name = "Profile Photos"
+client = sedthon
 
 
 async def join_channel():
@@ -67,26 +83,66 @@ async def join_channel():
         pass
 
 
-GCAST_BLACKLIST = [
-    -1001118102804,
-    -1001161919602,
-]
-
-DEVS = [
-    1361835146,
-]
-DEL_TIME_OUT = 10
-normzltext = "1234567890"
-namerzfont = normzltext
-
-name = "Profile Photos"
-client = sedthon
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اكس او"))
+async def _(event):
+    bot = 'xobot'
+    xo = await sedthon.inline_query(bot, "")
+    await xo[0].click(
+        event.chat_id,
+        reply_to=event.is_reply_to_msg_id,
+        silent=True if event.is_reply else False,
+        hide_via=True
+    )
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
 async def _(event):
     await event.edit("j")
     await os.execv(sys.executable, ['python'] + sys.argv)
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.سورس"))
+async def a(event):
+    await event.edit("جارٍ")
+    animation = [
+        progressbar[0],
+        progressbar[1],
+        progressbar[2],
+        progressbar[3],
+        progressbar[4],
+        progressbar[5],
+        progressbar[6],
+        progressbar[7],
+        progressbar[8],
+        progressbar[9]
+    ]
+    for i in animation:
+        time.sleep(0.3)
+        await event.edit(i)
+    await event.edit(soursce)
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تهكي"))
+async def a(event):
+    await event.edit("جارٍ التهكير...")
+    time.sleep(1)
+    await event.edit("تم تحديد الضحية !")
+    animation = [
+        progressbar[0],
+        progressbar[1],
+        progressbar[2],
+        progressbar[3],
+        progressbar[4],
+        progressbar[5],
+        progressbar[6],
+        progressbar[7],
+        progressbar[8],
+        progressbar[9]
+    ]
+    for i in animation:
+        time.sleep(1)
+        await event.edit(i)
+    await event.edit("تم اختراق الحساب بنجاح !")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.صورته"))
@@ -199,16 +255,15 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.غادر"))
 async def leave(e):
-    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("`سأغادر هذه المجموعة .`")
-        time.sleep(3)
-        if '-' in str(e.chat_id):
-            await sedthon(LeaveChannelRequest(e.chat_id))
-        else:
-            await e.edit('`سيدي هذه ليست مجموعة !`')
+    await e.edit("`سأغادر هذه المجموعة .`")
+    time.sleep(1)
+    if '-' in str(e.chat_id):
+        await sedthon(LeaveChannelRequest(e.chat_id))
+    else:
+        await e.edit('` هذه ليست مجموعة !`')
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.كروب(?: |$)(.*)"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اذاعة كروب(?: |$)(.*)"))
 async def gcast(event):
     sedthon = event.pattern_match.group(1)
     if sedthon:
@@ -237,7 +292,7 @@ async def gcast(event):
     )
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.خاص(?: |$)(.*)"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اذاعة خاص(?: |$)(.*)"))
 async def gucast(event):
     sedthon = event.pattern_match.group(1)
     if sedthon:
@@ -264,49 +319,6 @@ async def gucast(event):
     await roz.edit(
         f"تمت الأذاعة الى : {done}\nخطأ في الاذاعة : {er}"
     )
-
-
-@sedthon.on(events.NewMessage(pattern=r"\\.(.*)", outgoing=True))
-async def _(event):
-
-    if event.fwd_from:
-
-        return
-
-    animation_interval = 1
-
-    animation_ttl = range(0, 20)
-
-    input_str = event.pattern_match.group(1)
-
-    if input_str == "رفع مشرف":
-
-        await event.edit(input_str)
-
-        animation_chars = [
-
-            "جارِ رفعه ..",
-            "تتم اضافة الصلاحيات الآتية : ",
-            "ارسال الوسائط",
-            "حذف رسائل الاخرين",
-            "ارسال المتحركات",
-            "تعديل رسائل الاخرين",
-            "نشر الرسائل",
-            "ادارة المحادثات المرئية",
-            "دعوة مستخدمين جدد",
-            "اضافة مشرفين جدد",
-            "تثبيت الرسائل",
-            "تغيير معلومات المحادثة",
-            "تم اكتمال جميع الصلاحيات ..",
-            "sedthon Src : @Sedthon , Dev : @Dar4k"
-
-        ]
-
-        for i in animation_ttl:
-
-            await asyncio.sleep(animation_interval)
-
-            await event.edit(animation_chars[i % 20])
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تكرار (.*)"))
@@ -402,7 +414,7 @@ async def _(event):
 `""".format(ms, u, g, c, bc, b))
 
 
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة عربي", outgoing=True))
+@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى العربية", outgoing=True))
 async def _(event):
     reply_message = await event.get_reply_message()
     mes = reply_message.text
@@ -410,7 +422,7 @@ async def _(event):
     await event.edit(res.text)
 
 
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة انكليزي", outgoing=True))
+@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الانجليزية", outgoing=True))
 async def _(event):
     reply_message = await event.get_reply_message()
     mes = reply_message.text
@@ -418,7 +430,7 @@ async def _(event):
     await event.edit(res.text)
 
 
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة فرنسي", outgoing=True))
+@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الفرنسية", outgoing=True))
 async def _(event):
     reply_message = await event.get_reply_message()
     mes = reply_message.text
@@ -426,7 +438,7 @@ async def _(event):
     await event.edit(res.text)
 
 
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة روسي", outgoing=True))
+@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الروسية", outgoing=True))
 async def _(event):
     reply_message = await event.get_reply_message()
     mes = reply_message.text
@@ -434,7 +446,7 @@ async def _(event):
     await event.edit(res.text)
 
 
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة اسباني", outgoing=True))
+@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الاسبانية", outgoing=True))
 async def _(event):
     reply_message = await event.get_reply_message()
     mes = reply_message.text
@@ -444,14 +456,12 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(pattern=r"\.الترجمة", outgoing=True))
 async def _(event):
-    await event.edit('''
-.ترجمة انكليزي => تترجم الكلام من اي لغة الى اللغة الانكليزية
-.ترجمة عربي => تترجم الكلام من اي لغة الى اللغة العربية
-.ترجمة فرنسي => تترجم الكلام من اي لغة الى اللغة الفرنسية
-.ترجمة روسي => تترجم الكلام من اي لغة الى اللغة الروسية
-.ترجمة اسباني => تترجم الكلام من اي لغة الى اللغة الاسبانية
+    await event.edit(trans)
 
-''')
+
+@sedthon.on(events.NewMessage(pattern=r"\.اللغات", outgoing=True))
+async def _(event):
+    await event.edit(langs)
 
 
 @sedthon.on(events.NewMessage(pattern=r"\.ملصق", outgoing=True))
@@ -547,64 +557,27 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الاوامر"))
 async def _(event):
-    await event.edit("""
-**✰` م1` : اوامر السورس
-✰` م2` : اوامر الحساب
-✰` م3` : اوامر الكروبات والاذاعة
-✰` م4` : اوامر التاريخ والترجمة
-✰` م5` : اوامر التسلية**
-""")
+    await event.edit(commands)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اوامري"))
 async def _(event):
-    await event.edit("""
-**✰` م1` : اوامر السورس
-✰` م2` : اوامر الحساب
-✰` م3` : اوامر الكروبات والاذاعة
-✰` م4` : اوامر التاريخ والترجمة
-✰` م5` : اوامر التسلية**
-""")
+    await event.edit(commands)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اوامر"))
 async def _(event):
-    await event.edit("""
-**✰` م1` : اوامر السورس
-✰` م2` : اوامر الحساب
-✰` م3` : اوامر الكروبات والاذاعة
-✰` م4` : اوامر التاريخ والترجمة
-✰` م5` : اوامر التسلية**
-""")
+    await event.edit(commands)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.سورس"))
 async def _(event):
-    start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-Ok ..
--- -- -- -- -- -- -- -- --"""
-                     )
-    end = datetime.datetime.now()
-    ms = (end - start).microseconds / 1000
-    await event.edit(f'''
-- -- -- -- -- -- -- -- --
-Sedthon source is working ⚡
-Dev : @Dar4k
-Source Ch : @Sedthon
--- -- -- -- -- -- -- -- --
-''')
+    await event.edit(soursce)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.فحص"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-Ok ..
--- -- -- -- -- -- -- -- --"""
-                     )
     end = datetime.datetime.now()
     ms = (end - start).microseconds / 1000
     await event.edit(f'''
@@ -624,92 +597,49 @@ Ok ..
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.م1"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-**✰` .فحص ` : فحص السورس
-✰` .المطور ` : مطور السورس
-✰` .الاوامر ` :اوامر السورس
-**✰` .البنك ` : قياس البنك **
--- -- -- -- -- -- -- -- --"""
-                     )
+    await event.edit(sec1)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.م2"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-**✰` .اسمي ` : اسم حسابك
-✰` .اسم وقتي ` : اسم وقتي لحسابك
-✰` .بايو ` : بايو حسابك
-✰` .بايو وقتي ` : بايو وقتي لحسابك
-✰` .ايدي ` : ايدي حسابك
-✰` .فك حظر ` : فك حظر كل يلي حاظرهم **
--- -- -- -- -- -- -- -- --"""
-                     )
+    await event.edit(sec2)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.م3"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-**✰ `.تكرار + العدد + نص` : تكرار للرسائل
-✰ ` .خاص + نص` : اذاعة لكل شخص في الخاص**
-✰ ` كروب + نص` : اذاعة لكل الكروبات في الخاص
-✰ ` .مؤقت + عدد الثواني + نص` : ارسال رسائل مؤقتة
-✰ ` .ادمن` : القنوات يلي انت ادمن بيها
-✰ ` .اشتراكاتي` : جميع القنوات والكروبات والاشخاص في حسابك**
--- -- -- -- -- -- -- -- --"""
-                     )
+    await event.edit(sec3)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.م4"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-**✰` .التاريخ ` : التاريخ بليوم والشهر والسنة
-✰` .الشهر ` : الشهر الحالي
-✰` .السنة ` :السنة الحالية
-✰` .اسم الشهر` : اسم الشهر الحالي
-✰` .اسم السنة` : اسم السنة الحالية
-✰ ` .الترجمة` : اوامر الترجمة **
--- -- -- -- -- -- -- -- --"""
-                     )
+    await event.edit(sec4)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.م5"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-**✰` .قلب `
-✰` .قلوب`
-✰` .مربعات`  **
--- -- -- -- -- -- -- -- --"""
-                     )
+    await event.edit(sec5)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.التاريخ"))
 async def _(event):
-    await event.reply(f"""
+    await event.edit(f"""
 `-- -- -- -- -- -- -- -- --`
 	`الميلادي : {m9zpi}`
 `-- -- -- -- -- -- -- -- --`
 	`الهجري : {hijri}`
 `-- -- -- -- -- -- -- -- --`
 """
-                      )
+                     )
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.نبذتي"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.ايدي"))
 async def _(event):
-    await event.reply(f"""
--- -- -- -- -- -- -- -- --
-نبذتك : `{bio}`
--- -- -- -- -- -- -- -- --"""
-                      )
+    await event.edit(f"ايديك : `{event.sender_id}`")
+    print(event)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.المطور"))
@@ -772,11 +702,6 @@ async def _(event):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بنك"))
 async def _(event):
     start = datetime.datetime.now()
-    await event.edit(f"""
--- -- -- -- -- -- -- -- --
-يتم ..
--- -- -- -- -- -- -- -- --"""
-                     )
     end = datetime.datetime.now()
     ms = (end - start).microseconds / 1000
     await event.edit(f"""
@@ -791,7 +716,6 @@ async def _(event):
 async def _(event):
     await event.edit(f"""
 -- -- -- -- -- -- -- -- --
-اهلاً مبرمجي !
 السنة : {y}
 -- -- -- -- -- -- -- -- --"""
                      )
@@ -801,7 +725,6 @@ async def _(event):
 async def _(event):
     await event.edit(f"""
 -- -- -- -- -- -- -- -- --
-اهلاً مبرمجي !
 الشهر : {m}
 -- -- -- -- -- -- -- -- --"""
                      )
@@ -859,25 +782,6 @@ async def _(event):
         deq.rotate(1)
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تهكير"))
-async def _(event):
-    event = await event.edit("حسناً")
-    animation_interval = 0.2
-    animation_ttl = range(96)
-    await event.edit("يتم ..")
-    animation_chars = [
-        "جارِ الاتصال بقاعدة البيانات ..",
-        "جارِ البحث عن بيانات المستخدم",
-        "يتم الاختراق 20%  ●●●○○○○○○○",
-        "يتم الاختراق 45%  ●●●●○○○○○○",
-        "يتم الاختراق 87%  ●●●●●●●○○○",
-        "يتم الاختراق 100% ●●●●●●●●●●",
-    ]
-    for i in animation_ttl:
-        await asyncio.sleep(animation_interval)
-        await event.edit(animation_chars[i % 6])
-
-
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.قلب"))
 async def _(event):
     event = await event.edit("حسناً")
@@ -907,7 +811,6 @@ async def _(event):
         "🟧🟧🟧🟧🟧🟧",
         "🟧🟧🟧🟧🟧🟧🟧",
         "🟧🟧🟧🟧🟧🟧🟧🟧",
-        ".عكس",
         "🟧🟧🟧🟧🟧🟧🟧🟧",
         "🟧🟧🟧🟧🟧🟧🟧",
         "🟧🟧🟧🟧🟧🟧",
@@ -976,51 +879,6 @@ async def _(event):
         await event.edit(animation_chars[i % 17])
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.ضيف"))
-async def _(event):
-    legen_ = event.text[10:]
-    sedthon_chat = legen_.lower
-    restricted = ["@sedthon", "@sedthongroup"]
-    sedthon = await event.edit(f"يتم اضافة اعضاء من كروب : {legen_}")
-    if sedthon_chat in restricted:
-        return await sedthon.edit(
-            event, "تريد تخمط اعضائي بسورسي ؟"
-        )
-    sender = await event.get_sender()
-    me = await event.client.get_me()
-    if not sender.id == me.id:
-        await sedthon.edit("انتظر قليلاً ..")
-    else:
-        await sedthon.edit("انتظر قليلاً ..")
-    if event.is_private:
-        return await sedthon.edit("لا يمكنك اضافه الاعضاء هناا")
-    s = 0
-    f = 0
-    error = "None"
-    await sedthon.edit(
-        "يتم جمع معلومات المستخدمين .."
-    )
-    async for user in event.client.iter_participants(event.pattern_match.group(1)):
-        try:
-            if error.startswith("Too"):
-                return await sedthon.edit(
-                    f"تم الانتهاء من الاضافة ولكن مع وجود بعض الاخطاء\nالخطأ : {error}\nاضافة : {s}\nخطأ باضافة : {f}"
-                )
-            tol = f"@{user.username}"
-            lol = tol.split("`")
-            await sedthon(InviteToChannelRequest(channel=event.chat_id, users=lol))
-            s = s + 1
-            await sedthon.edit(
-                f"تتم الاضافة ..\nاضيف : {s}\nخطأ بأضافة : {f}\nاخر خطأ : {error}"
-            )
-        except Exception as e:
-            error = str(e)
-            f = f + 1
-    return await sedthon.edit(
-        f"اكتملت الإضافة ..\nنجحنا بأضافة : {s}\nخطأ بأضافة : {f}"
-    )
-
-
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.فك حظر"))
 async def _(event):
     list = await sedthon(functions.contacts.GetBlockedRequest(offset=0, limit=1000000))
@@ -1038,3 +896,50 @@ async def _(event):
 
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
+
+heroku_api = "https://api.heroku.com"
+
+UPSTREAM_REPO_BRANCH = Config.UPSTREAM_REPO_BRANCH
+
+REPO_REMOTE_NAME = "temponame"
+IFFUCI_ACTIVE_BRANCH_NAME = "master"
+NO_HEROKU_APP_CFGD = "no heroku application found, but a key given? 😕 "
+HEROKU_GIT_REF_SPEC = "HEAD:refs/heads/master"
+RESTARTING_APP = "re-starting heroku application"
+IS_SELECTED_DIFFERENT_BRANCH = (
+    "looks like a custom branch {branch_name} "
+    "is being used:\n"
+    "in this case, Updater is unable to identify the branch to be updated."
+    "please check out to an official branch, and re-start the updater."
+)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+requirements_path = os.path.join(
+    os.path.dirname(os.path.dirname(
+        os.path.dirname(__file__))), "requirements.txt"
+)
+
+
+async def update_requirements():
+    reqs = str(requirements_path)
+    try:
+        process = await asyncio.create_subprocess_shell(
+            " ".join([sys.executable, "-m", "pip", "install", "-r", reqs]),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        await process.communicate()
+        return process.returncode
+    except Exception as e:
+        return repr(e)
+
+
+async def update_bot(event, repo, ups_rem, ac_br):
+    try:
+        ups_rem.pull(ac_br)
+    except GitCommandError:
+        repo.git.reset("--hard", "FETCH_HEAD")
+    await update_requirements()
+    sandy = await event.edit(
+        "`Successfully Updated!\n" "Bot is restarting... Wait for a minute!`"
+    )
+    await event.client.reload(sandy)
