@@ -97,7 +97,6 @@ async def update_bot(event, repo, ups_rem, ac_br):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
-    conf = event.pattern_match.group(1).strip()
     event = await event.edit(event, "⌔∮ يتم البحث على التحديثات ام وجدت")
     off_repo = UPSTREAM_REPO_URL
     force_update = False
@@ -119,11 +118,6 @@ async def upstream(event):
         await event.edit(f"{txt}\nخطأ مبكر {error}")
         return repo.__del__()
     except InvalidGitRepositoryError as error:
-        if conf is None:
-            return await event.edit(
-                f"للتحديث ارسل `.تحديث الان.`"
-            )
-
         repo = Repo.init()
         origin = repo.create_remote("upstream", off_repo)
         origin.fetch()
@@ -149,18 +143,7 @@ async def upstream(event):
             "\n⌔∮ عزيز المستخدم انت تستخدم اخر اصدار من جمثون 🫂♥"
         )
         return repo.__del__()
-    if conf == "" and not force_update:
-        await print_changelogs(event, ac_br, changelog)
-        await event.delete()
-        return await event.respond(
-            f"ارسل `تحديث الان` لتحديث سورس جمثون"
-        )
 
-    if force_update:
-        await event.edit(
-            "- يتم التحديث الاجباري لأخر اصدار من السورس انتظر قليلا"
-        )
-    if conf == "الان":
-        await event.edit("⌔∮ جارِ تحديث جمثون يرجى الأنتظار قليلا")
-        await update_bot(event, repo, ups_rem, ac_br)
+    await event.edit("⌔∮ جارِ تحديث جمثون يرجى الأنتظار قليلا")
+    await update_bot(event, repo, ups_rem, ac_br)
     return
