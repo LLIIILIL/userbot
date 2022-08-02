@@ -894,10 +894,10 @@ async def _(event):
         unblocked_count = 1
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
-'''
+
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
 async def _(event):
     await event.edit("تم التحديث")
-'''
+
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
