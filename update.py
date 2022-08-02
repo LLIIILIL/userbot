@@ -98,12 +98,12 @@ async def update_bot(event, repo, ups_rem, ac_br):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
     "To check if the bot is up to date and update if specified"
-    event = await event.edit(event, "`Checking for updates, please wait....`")
+    event = await event.edit("`Checking for updates, please wait....`")
     off_repo = UPSTREAM_REPO_URL
     force_update = False
     if ENV and (HEROKU_API_KEY is None or HEROKU_APP_NAME is None):
         return await event.edit(
-            event, "`Set the required vars first to update the bot`"
+            "`Set the required vars first to update the bot`"
         )
     try:
         txt = (
@@ -142,13 +142,6 @@ async def upstream(event):
     ups_rem = repo.remote("upstream")
     ups_rem.fetch(ac_br)
     changelog = await gen_chlog(repo, f"HEAD..upstream/{ac_br}")
-    # Special case for deploy
-    if changelog == "" and not force_update:
-        await event.edit(
-            "\n`CATUSERBOT is`  **up-to-date**  `with`  "
-            f"**{UPSTREAM_REPO_BRANCH}**\n"
-        )
-        return repo.__del__()
 
     await event.edit("`Updating userbot, please wait....`")
     await update_bot(event, repo, ups_rem, ac_br)
