@@ -98,7 +98,6 @@ async def update_bot(event, repo, ups_rem, ac_br):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
     "To check if the bot is up to date and update if specified"
-    conf = event.pattern_match.group(1).strip()
     event = await event.edit(event, "`Checking for updates, please wait....`")
     off_repo = UPSTREAM_REPO_URL
     force_update = False
@@ -120,10 +119,6 @@ async def upstream(event):
         await event.edit(f"{txt}\n`Early failure! {error}`")
         return repo.__del__()
     except InvalidGitRepositoryError as error:
-        if conf is None:
-            return await event.edit(
-                f"`Unfortunately, the directory {error} does not seem to be a git repository.\nBut we can fix that by force updating the userbot using .update now.`"
-            )
 
         repo = Repo.init()
         origin = repo.create_remote("upstream", off_repo)
