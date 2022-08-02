@@ -97,12 +97,12 @@ async def update_bot(event, repo, ups_rem, ac_br):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
-    event = await event.edit(event, "⌔∮ يتم البحث على التحديثات ام وجدت")
+    event = await event.edit("⌔∮ يتم البحث على التحديثات ام وجدت")
     off_repo = UPSTREAM_REPO_URL
     force_update = False
     if ENV and (HEROKU_API_KEY is None or HEROKU_APP_NAME is None):
         return await event.edit(
-            event, "⌔∮ يجب عليك وضع الفارات المطلوبة لتحديث جمثون"
+            "⌔∮ يجب عليك وضع الفارات المطلوبة لتحديث جمثون"
         )
     try:
         txt = (
