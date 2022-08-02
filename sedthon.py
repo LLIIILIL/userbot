@@ -899,8 +899,6 @@ sedthon.run_until_disconnected()
 
 heroku_api = "https://api.heroku.com"
 
-UPSTREAM_REPO_BRANCH = Config.UPSTREAM_REPO_BRANCH
-
 REPO_REMOTE_NAME = "temponame"
 IFFUCI_ACTIVE_BRANCH_NAME = "master"
 NO_HEROKU_APP_CFGD = "no heroku application found, but a key given? 😕 "
