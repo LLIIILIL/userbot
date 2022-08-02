@@ -51,6 +51,7 @@ from telethon.tl.types import InputPeerUser
 from telethon.sessions import StringSession
 from calcu import *
 from config import *
+from update import *
 from help import *
 y = datetime.datetime.now().year
 m = datetime.datetime.now().month
@@ -177,9 +178,7 @@ async def _(event):
             await event.edit("`ليس لديه صوره يا ذكي !`")
             return
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
-async def _(event):
-    await event.edit("تم التحديث")
+
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.ذاتية"))
 async def _(event):
     if not event.is_reply:
@@ -928,19 +927,11 @@ async def update_requirements():
         return process.returncode
     except Exception as e:
         return repr(e)
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
-async def update_bot(event, repo, ups_rem, ac_br):
-    try:
-        ups_rem.pull(ac_br)
-    except GitCommandError:
-        repo.git.reset("--hard", "FETCH_HEAD")
-    await update_requirements()
-    sandy = await event.edit(
-        "`Successfully Updated!\n" "Bot is restarting... Wait for a minute!`"
-    )
-    await event.sedthon.reload(sandy)
+'''
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
+async def _(event):
+    await event.edit("تم التحديث")
+'''
 
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
