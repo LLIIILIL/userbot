@@ -894,9 +894,6 @@ async def _(event):
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
 
-print("- sedthon Userbot Running ..")
-sedthon.run_until_disconnected()
-
 heroku_api = "https://api.heroku.com"
 
 REPO_REMOTE_NAME = "temponame"
@@ -930,6 +927,7 @@ async def update_requirements():
     except Exception as e:
         return repr(e)
 
+
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def update_bot(event, repo, ups_rem, ac_br):
     try:
@@ -941,3 +939,6 @@ async def update_bot(event, repo, ups_rem, ac_br):
         "`Successfully Updated!\n" "Bot is restarting... Wait for a minute!`"
     )
     await event.sedthon.reload(sandy)
+
+print("- sedthon Userbot Running ..")
+sedthon.run_until_disconnected()
