@@ -177,7 +177,9 @@ async def _(event):
             await event.edit("`ليس لديه صوره يا ذكي !`")
             return
 
-
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
+async def _(event):
+    await event.edit("تم التحديث")
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.ذاتية"))
 async def _(event):
     if not event.is_reply:
