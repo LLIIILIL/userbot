@@ -97,25 +97,45 @@ async def update_bot(event, repo, ups_rem, ac_br):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
-    "To check if the bot is up to date and update if specified"
-    event = await event.edit("`Checking for updates, please wait....`")
+    conf = event.pattern_match.group(1).strip()
+    event = await event.edit(event, "⌔∮ يتم البحث على التحديثات ام وجدت")
     off_repo = UPSTREAM_REPO_URL
     force_update = False
     if ENV and (HEROKU_API_KEY is None or HEROKU_APP_NAME is None):
         return await event.edit(
-            "`Set the required vars first to update the bot`"
+            event, "⌔∮ يجب عليك وضع الفارات المطلوبة لتحديث جمثون"
+        )
+    try:
+        txt = (
+            "**⌔∮ عذرا لم يتم اكمال التحديث بسبب بعض الاخطاء "
+            + "**اللوگ:**\n"
         )
 
-    repo = Repo()
+        repo = Repo()
+    except NoSuchPathError as error:
+        await event.edit(f"{txt}\nالفولدر {error} لم يتم ايجاده")
+        return repo.__del__()
+    except GitCommandError as error:
+        await event.edit(f"{txt}\nخطأ مبكر {error}")
+        return repo.__del__()
+    except InvalidGitRepositoryError as error:
+        if conf is None:
+            return await event.edit(
+                f"للتحديث ارسل `.تحديث الان.`"
+            )
 
+        repo = Repo.init()
+        origin = repo.create_remote("upstream", off_repo)
+        origin.fetch()
+        force_update = True
+        repo.create_head("master", origin.refs.master)
+        repo.heads.master.set_tracking_branch(origin.refs.master)
+        repo.heads.master.checkout(True)
     ac_br = repo.active_branch.name
     if ac_br != UPSTREAM_REPO_BRANCH:
         await event.edit(
-            "**[UPDATER]:**\n"
-            f"`Looks like you are using your own custom branch ({ac_br}). "
-            "in that case, Updater is unable to identify "
-            "which branch is to be merged. "
-            "please checkout to any official branch`"
+            "**[التحديث]:**\n"
+            f"- يبدو انك تستحدم فرع خاص بك لذلك يعذر تحديثه ({ac_br}). "
         )
         return repo.__del__()
     with contextlib.suppress(BaseException):
@@ -123,7 +143,24 @@ async def upstream(event):
     ups_rem = repo.remote("upstream")
     ups_rem.fetch(ac_br)
     changelog = await gen_chlog(repo, f"HEAD..upstream/{ac_br}")
+    #
+    if changelog == "" and not force_update:
+        await event.edit(
+            "\n⌔∮ عزيز المستخدم انت تستخدم اخر اصدار من جمثون 🫂♥"
+        )
+        return repo.__del__()
+    if conf == "" and not force_update:
+        await print_changelogs(event, ac_br, changelog)
+        await event.delete()
+        return await event.respond(
+            f"ارسل `تحديث الان` لتحديث سورس جمثون"
+        )
 
-    await event.edit("`Updating userbot, please wait....`")
-    await update_bot(event, repo, ups_rem, ac_br)
+    if force_update:
+        await event.edit(
+            "- يتم التحديث الاجباري لأخر اصدار من السورس انتظر قليلا"
+        )
+    if conf == "الان":
+        await event.edit("⌔∮ جارِ تحديث جمثون يرجى الأنتظار قليلا")
+        await update_bot(event, repo, ups_rem, ac_br)
     return
