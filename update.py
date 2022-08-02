@@ -104,27 +104,13 @@ async def upstream(event):
         return await event.edit(
             "⌔∮ يجب عليك وضع الفارات المطلوبة لتحديث جمثون"
         )
-    try:
-        txt = (
+
+    txt = (
             "**⌔∮ عذرا لم يتم اكمال التحديث بسبب بعض الاخطاء "
             + "**اللوگ:**\n"
         )
 
-        repo = Repo()
-    except NoSuchPathError as error:
-        await event.edit(f"{txt}\nالفولدر {error} لم يتم ايجاده")
-        return repo.__del__()
-    except GitCommandError as error:
-        await event.edit(f"{txt}\nخطأ مبكر {error}")
-        return repo.__del__()
-    except InvalidGitRepositoryError as error:
-        repo = Repo.init()
-        origin = repo.create_remote("upstream", off_repo)
-        origin.fetch()
-        force_update = True
-        repo.create_head("master", origin.refs.master)
-        repo.heads.master.set_tracking_branch(origin.refs.master)
-        repo.heads.master.checkout(True)
+    repo = Repo()
     ac_br = repo.active_branch.name
     if ac_br != UPSTREAM_REPO_BRANCH:
         await event.edit(
