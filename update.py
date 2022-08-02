@@ -105,28 +105,9 @@ async def upstream(event):
         return await event.edit(
             "`Set the required vars first to update the bot`"
         )
-    try:
-        txt = (
-            "`Oops.. Updater cannot continue due to "
-            + "some problems occured`\n\n**LOGTRACE:**\n"
-        )
 
-        repo = Repo()
-    except NoSuchPathError as error:
-        await event.edit(f"{txt}\n`directory {error} is not found`")
-        return repo.__del__()
-    except GitCommandError as error:
-        await event.edit(f"{txt}\n`Early failure! {error}`")
-        return repo.__del__()
-    except InvalidGitRepositoryError as error:
+    repo = Repo()
 
-        repo = Repo.init()
-        origin = repo.create_remote("upstream", off_repo)
-        origin.fetch()
-        force_update = True
-        repo.create_head("master", origin.refs.master)
-        repo.heads.master.set_tracking_branch(origin.refs.master)
-        repo.heads.master.checkout(True)
     ac_br = repo.active_branch.name
     if ac_br != UPSTREAM_REPO_BRANCH:
         await event.edit(
