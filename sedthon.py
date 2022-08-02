@@ -895,43 +895,9 @@ async def _(event):
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
 
-heroku_api = "https://api.heroku.com"
-
-REPO_REMOTE_NAME = "temponame"
-IFFUCI_ACTIVE_BRANCH_NAME = "master"
-NO_HEROKU_APP_CFGD = "no heroku application found, but a key given? 😕 "
-HEROKU_GIT_REF_SPEC = "HEAD:refs/heads/master"
-RESTARTING_APP = "re-starting heroku application"
-IS_SELECTED_DIFFERENT_BRANCH = (
-    "looks like a custom branch {branch_name} "
-    "is being used:\n"
-    "in this case, Updater is unable to identify the branch to be updated."
-    "please check out to an official branch, and re-start the updater."
-)
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-requirements_path = os.path.join(
-    os.path.dirname(os.path.dirname(
-        os.path.dirname(__file__))), "requirements.txt"
-)
-
-
-async def update_requirements():
-    reqs = str(requirements_path)
-    try:
-        process = await asyncio.create_subprocess_shell(
-            " ".join([sys.executable, "-m", "pip", "install", "-r", reqs]),
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-        )
-        await process.communicate()
-        return process.returncode
-    except Exception as e:
-        return repr(e)
-'''
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
 async def _(event):
     await event.edit("تم التحديث")
-'''
 
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
