@@ -930,7 +930,7 @@ async def update_requirements():
     except Exception as e:
         return repr(e)
 
-
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def update_bot(event, repo, ups_rem, ac_br):
     try:
         ups_rem.pull(ac_br)
@@ -940,4 +940,4 @@ async def update_bot(event, repo, ups_rem, ac_br):
     sandy = await event.edit(
         "`Successfully Updated!\n" "Bot is restarting... Wait for a minute!`"
     )
-    await event.client.reload(sandy)
+    await event.sedthon.reload(sandy)
