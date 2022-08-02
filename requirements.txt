@@ -1,0 +1,6 @@
+telethon
+googletrans==3.1.0a0
+hijri_converter
+user_agent
+git
+heroku3
