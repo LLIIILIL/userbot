@@ -106,18 +106,12 @@ async def upstream(event):
         )
 
     txt = (
-            "**⌔∮ عذرا لم يتم اكمال التحديث بسبب بعض الاخطاء "
-            + "**اللوگ:**\n"
-        )
+        "**⌔∮ عذرا لم يتم اكمال التحديث بسبب بعض الاخطاء "
+        + "**اللوگ:**\n"
+    )
 
     repo = Repo()
     ac_br = repo.active_branch.name
-    if ac_br != UPSTREAM_REPO_BRANCH:
-        await event.edit(
-            "**[التحديث]:**\n"
-            f"- يبدو انك تستحدم فرع خاص بك لذلك يعذر تحديثه ({ac_br}). "
-        )
-        return repo.__del__()
     with contextlib.suppress(BaseException):
         repo.create_remote("upstream", off_repo)
     ups_rem = repo.remote("upstream")
