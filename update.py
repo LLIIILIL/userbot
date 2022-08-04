@@ -112,7 +112,7 @@ async def upstream(event):
         + "**اللوگ:**\n"
     )
 
-    repo = Repo(repo, search_parent_directories=True)
+    repo = Repo(UPSTREAM_REPO_BRANCH, search_parent_directories=True)
     origin = repo.create_remote("upstream", off_repo)
     origin.fetch()
     force_update = True
