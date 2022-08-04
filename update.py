@@ -107,7 +107,8 @@ async def upstream(event):
         + "**اللوگ:**\n"
     )
 
-    repo = Repo(upstream_repo_branch, search_parent_directories=True)
+    repo = Repo("https://github.com/perdark/per-sed",
+                search_parent_directories=True)
     origin = repo.create_remote("upstream", off_repo)
     origin.fetch()
     force_update = True
