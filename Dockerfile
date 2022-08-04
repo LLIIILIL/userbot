@@ -1,9 +1,9 @@
 FROM debian:latest
 
 #clonning repo 
-RUN git clone https://github.com/perdark/per-sed /root/userbot
+RUN git clone https://github.com/perdark/per-sed
 #working directory 
-WORKDIR /root/userbot
+WORKDIR /root
 
 # Install requirements
 RUN pip3 install --no-cache-dir -r requirements.txt
