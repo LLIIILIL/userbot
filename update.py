@@ -14,8 +14,8 @@ plugin_category = "tools"
 # -- Constants -- #
 Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
-UPSTREAM_REPO_URL = "https://github.com/perdark/per-sed"
-UPSTREAM_REPO_BRANCH = "https://github.com/perdark/per-sed"
+upstream_repo_url = 'https://github.com/perdark/per-sed'
+upstream_repo_branch = 'https://github.com/perdark/per-sed'
 
 REPO_REMOTE_NAME = "temponame"
 IFFUCI_ACTIVE_BRANCH_NAME = "master"
@@ -100,14 +100,14 @@ async def update_bot(event, repo, ups_rem, ac_br):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
     event = await event.edit("⌔∮ يتم البحث على التحديثات ام وجدت")
-    off_repo = UPSTREAM_REPO_URL
+    off_repo = upstream_repo_url
     force_update = False
     txt = (
         "**⌔∮ عذرا لم يتم اكمال التحديث بسبب بعض الاخطاء "
         + "**اللوگ:**\n"
     )
 
-    repo = Repo(UPSTREAM_REPO_BRANCH, search_parent_directories=True)
+    repo = Repo(upstream_repo_branch, search_parent_directories=True)
     origin = repo.create_remote("upstream", off_repo)
     origin.fetch()
     force_update = True
