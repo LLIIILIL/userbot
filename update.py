@@ -14,8 +14,8 @@ plugin_category = "tools"
 # -- Constants -- #
 Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
-upstream_repo_url = 'https://github.com/perdark/per-sed'
-upstream_repo_branch = 'https://github.com/perdark/per-sed'
+upstream_repo_url = "https://github.com/perdark/per-sed"
+upstream_repo_branch = "https://github.com/perdark/per-sed"
 
 REPO_REMOTE_NAME = "temponame"
 IFFUCI_ACTIVE_BRANCH_NAME = "master"
