@@ -9,11 +9,13 @@ import urllib3
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from config import *
+plugin_category = "tools"
+#ENV = bool(os.environ.get("ENV", False))
 # -- Constants -- #
 Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
-UPSTREAM_REPO_URL = "https://github.com/perdark/per-sed"
-UPSTREAM_REPO_BRANCH = "https://github.com/perdark/per-sed"
+UPSTREAM_REPO_URL = 'https://github.com/perdark/per-sed'
+UPSTREAM_REPO_BRANCH = 'https://github.com/perdark/per-sed'
 
 REPO_REMOTE_NAME = "temponame"
 IFFUCI_ACTIVE_BRANCH_NAME = "master"
@@ -100,11 +102,6 @@ async def upstream(event):
     event = await event.edit("⌔∮ يتم البحث على التحديثات ام وجدت")
     off_repo = UPSTREAM_REPO_URL
     force_update = False
-    if ENV and (HEROKU_API_KEY is None or HEROKU_APP_NAME is None):
-        return await event.edit(
-            "⌔∮ يجب عليك وضع الفارات المطلوبة لتحديث جمثون"
-        )
-
     txt = (
         "**⌔∮ عذرا لم يتم اكمال التحديث بسبب بعض الاخطاء "
         + "**اللوگ:**\n"
