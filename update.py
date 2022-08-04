@@ -9,8 +9,6 @@ import urllib3
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from config import *
-plugin_category = "tools"
-ENV = bool(os.environ.get("ENV", False))
 # -- Constants -- #
 Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
