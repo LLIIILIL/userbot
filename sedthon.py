@@ -895,7 +895,7 @@ async def _(event):
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.r"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.j"))
 async def _(event):
     await event.edit("تم التحديث")
 
