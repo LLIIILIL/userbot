@@ -12,10 +12,12 @@ from config import *
 plugin_category = "tools"
 ENV = bool(os.environ.get("ENV", False))
 # -- Constants -- #
+Heroku = heroku3.from_key(HEROKU_API_KEY)
 heroku_api = "https://api.heroku.com"
-UPSTREAM_REPO_BRANCH = 'https://github.com/perdark/per-sed'
 UPSTREAM_REPO_URL = 'https://github.com/perdark/per-sed'
-REPO_REMOTE_NAME = "per-sed"
+UPSTREAM_REPO_BRANCH = 'https://github.com/perdark/per-sed'
+
+REPO_REMOTE_NAME = "temponame"
 IFFUCI_ACTIVE_BRANCH_NAME = "master"
 NO_HEROKU_APP_CFGD = "no heroku application found, but a key given? 😕 "
 HEROKU_GIT_REF_SPEC = "HEAD:refs/heads/master"
@@ -111,6 +113,12 @@ async def upstream(event):
     )
 
     repo = Repo()
+    origin = repo.create_remote("upstream", off_repo)
+    origin.fetch()
+    force_update = True
+    repo.create_head("master", origin.refs.master)
+    repo.heads.master.set_tracking_branch(origin.refs.master)
+    repo.heads.master.checkout(True)
     ac_br = repo.active_branch.name
     with contextlib.suppress(BaseException):
         repo.create_remote("upstream", off_repo)
