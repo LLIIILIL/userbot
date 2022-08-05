@@ -22,4 +22,4 @@ async def _(event):
         msg = ("".join(msg.split(maxsplit=2)[2:])).split(" ", 2)[0]
         #msg = masg[0]
         await sedthon.send_message(chat, f"استثمار {msg}")
-        await asyncio.sleep(5)
+        await asyncio.sleep(1210)
