@@ -4,3 +4,4 @@ hijri_converter
 user_agent
 heroku3
 gitpython
+requests
