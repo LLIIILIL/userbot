@@ -11,9 +11,9 @@ async def _(event):
     await event.edit(waad)
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.كلمات وعد"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.كلمات وعد (.*)"))
 async def _(event):
-    for i in range(10):
+    for i in range(int("".join(event.text.split(maxsplit=2)[2:]).split(" ", 2)[0])):
         chat = event.chat_id
         await sedthon.send_message(chat, 'كلمات')
         await asyncio.sleep(0.5)
@@ -31,7 +31,8 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.استثمار وعد (.*)"))
 async def _(event):
-    for i in range(int("".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)[0])):
+    a = 
+    for i in range(int("".join(event.text.split(maxsplit=2)[2:]).split(" ", 2)[0])):
         chat = event.chat_id
         await sedthon.send_message(chat, 'فلوسي')
         await asyncio.sleep(0.5)
