@@ -31,7 +31,6 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.استثمار وعد (.*)"))
 async def _(event):
-    a = 
     for i in range(int("".join(event.text.split(maxsplit=2)[2:]).split(" ", 2)[0])):
         chat = event.chat_id
         await sedthon.send_message(chat, 'فلوسي')
