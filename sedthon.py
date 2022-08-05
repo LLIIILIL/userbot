@@ -650,11 +650,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بنك"))
 async def _(event):
-    catevent = await event.edit(event, "`!....`")
-    await asyncio.sleep(0.3)
-    await event.edit(catevent, "`..!..`")
-    await asyncio.sleep(0.3)
-    await event.edit(catevent, "`....!`")
+    await event.edit("انتضر...")
     start = datetime.now()
     end = datetime.now()
     tms = (end - start).microseconds / 1000
