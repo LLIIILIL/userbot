@@ -1,12 +1,3 @@
-import asyncio
-import contextlib
-import os
-import sys
-import heroku3
-import urllib3
-from git import Repo
-from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
-# --
 import os
 import sys
 import random
@@ -16,7 +7,6 @@ import logging
 import asyncio
 import time
 from telethon.tl import functions, types
-from googletrans import Translator, constants
 from telethon.tl.functions.messages import ImportChatInviteRequest as Get
 from telethon.utils import get_display_name
 from telethon.tl.functions.channels import JoinChannelRequest
@@ -42,6 +32,7 @@ from telethon.tl.types import (
     UserStatusRecently
 )
 from telethon.tl import functions
+# -
 from hijri_converter import Hijri, Gregorian
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.errors.rpcerrorlist import YouBlockedUserError
@@ -51,15 +42,17 @@ from telethon.tl.types import InputPeerUser
 from telethon.sessions import StringSession
 from calcu import *
 from config import *
-from update import *
+from checktele import *
 from help import *
+from waad import *
+from toolen import *
+from trans import *
 y = datetime.datetime.now().year
 m = datetime.datetime.now().month
 dayy = datetime.datetime.now().day
 day = datetime.datetime.now().strftime("%A")
 m9zpi = f"{y}-{m}-{dayy} - {day} day"
 sec = time.time()
-tran = Translator()
 hijri_day = tran.translate(str(day), dest="ar")
 hijri = f"{Gregorian.today().to_hijri()} - {hijri_day.text}"
 LOGS = logging.getLogger(__name__)
@@ -123,7 +116,7 @@ async def a(event):
     await event.edit(soursce)
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تهكي"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تهكير"))
 async def a(event):
     await event.edit("جارٍ التهكير...")
     time.sleep(1)
@@ -337,6 +330,16 @@ async def spammer(event):
     await spam_function(event, sandy, cat, sleeptimem, sleeptimet)
 
 
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.مؤقت (.*)"))
+async def spammer(event):
+    reply = await event.get_reply_message()
+    input_str = "".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)
+    sleeptimet = sleeptimem = float(input_str[0])
+    cat = input_str[1:]
+    await event.delete()
+    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+
+
 async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
     hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
     counter = int(cat[0])
@@ -353,7 +356,6 @@ async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=Fal
             sandy = await event.client.send_file(
                 event.chat_id, sandy, caption=sandy.text
             )
-           # await _catutils.unsavegif(event, sandy)
             await asyncio.sleep(sleeptimem)
     elif event.reply_to_msg_id and sandy.text:
         spam_message = sandy.text
@@ -365,16 +367,6 @@ async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=Fal
             await event.client(hmm)
         except BaseException:
             pass
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.مؤقت (.*)"))
-async def spammer(event):
-    reply = await event.get_reply_message()
-    input_str = "".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)
-    sleeptimet = sleeptimem = float(input_str[0])
-    cat = input_str[1:]
-    await event.delete()
-    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اشتراكاتي"))
@@ -413,56 +405,6 @@ async def _(event):
 القنوات :\t{}
 البوتات :\t{}
 `""".format(ms, u, g, c, bc, b))
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى العربية", outgoing=True))
-async def _(event):
-    reply_message = await event.get_reply_message()
-    mes = reply_message.text
-    res = tran.translate(str(mes), dest="ar")
-    await event.edit(res.text)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الانجليزية", outgoing=True))
-async def _(event):
-    reply_message = await event.get_reply_message()
-    mes = reply_message.text
-    res = tran.translate(str(mes), dest="en")
-    await event.edit(res.text)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الفرنسية", outgoing=True))
-async def _(event):
-    reply_message = await event.get_reply_message()
-    mes = reply_message.text
-    res = tran.translate(str(mes), dest="fr")
-    await event.edit(res.text)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الروسية", outgoing=True))
-async def _(event):
-    reply_message = await event.get_reply_message()
-    mes = reply_message.text
-    res = tran.translate(str(mes), dest="ru")
-    await event.edit(res.text)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.ترجمة الى الاسبانية", outgoing=True))
-async def _(event):
-    reply_message = await event.get_reply_message()
-    mes = reply_message.text
-    res = tran.translate(str(mes), dest="es")
-    await event.edit(res.text)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.الترجمة", outgoing=True))
-async def _(event):
-    await event.edit(trans)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.اللغات", outgoing=True))
-async def _(event):
-    await event.edit(langs)
 
 
 @sedthon.on(events.NewMessage(pattern=r"\.ملصق", outgoing=True))
@@ -625,6 +567,12 @@ async def _(event):
     await event.edit(sec5)
 
 
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الاوامر الخاصة"))
+async def _(event):
+    start = datetime.datetime.now()
+    await event.edit(spc)
+
+
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.التاريخ"))
 async def _(event):
     await event.edit(f"""
@@ -702,14 +650,20 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بنك"))
 async def _(event):
-    start = datetime.datetime.now()
-    end = datetime.datetime.now()
-    ms = (end - start).microseconds / 1000
+    catevent = await event.edit(event, "`!....`")
+    await asyncio.sleep(0.3)
+    await event.edit(catevent, "`..!..`")
+    await asyncio.sleep(0.3)
+    await event.edit(catevent, "`....!`")
+    start = datetime.now()
+    end = datetime.now()
+    tms = (end - start).microseconds / 1000
+    ms = round((tms - 0.6) / 3, 3)
     await event.edit(f"""
--- -- -- -- -- -- -- -- --
+`-- -- -- -- -- -- -- -- -- --`
 - تمت الاستجابة
 - البنك : `{ms}`
--- -- -- -- -- -- -- -- --"""
+`-- -- -- -- -- -- -- -- -- --`"""
                      )
 
 
@@ -893,11 +847,6 @@ async def _(event):
             razan = await event.edit(f'جارِ الغاء الحظر : {round((unblocked_count * 100) / len(list.blocked), 2)}%')
         unblocked_count = 1
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.j"))
-async def _(event):
-    await event.edit("تم التحديث")
 
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
