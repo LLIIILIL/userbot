@@ -79,7 +79,7 @@ async def join_channel():
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اكس او"))
 async def _(event):
-    bot = 'xobot'
+    bot = 'inlinegamesbot'
     xo = await sedthon.inline_query(bot, "")
     await xo[0].click(
         event.chat_id,
