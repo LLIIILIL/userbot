@@ -11,25 +11,30 @@
   "website": "https://github.com/perdark/per-sed",
   "env": {
     "APP_ID": {
-      "description": "ID",
+      "description": "ايبي ايدي",
       "value": "",
       "required": true
     },
     "APP_HASH": {
-      "description": "HASH",
+      "description": "ايبي هاش",
       "value": "",
       "required": true
     },
     "TERMUX": {
-      "description": "TERMUX",
+      "description": "كود تيرمكس",
       "value": "",
       "required": true
     },
     "TOKEN": {
-      "description": "BOT TOKEN",
+      "description": "توكن البون",
       "value": "",
       "required": true
-  }
+  },
+    "BOT_USERNAME": {
+      "description": "يوزر البوت بدون ـ@ـ",
+      "value": "",
+      "required": true
+    }
 }
 
 }
