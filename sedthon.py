@@ -79,12 +79,12 @@ async def join_channel():
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اكس او"))
 async def _(event):
-    await event.delete()
+     
     bot = 'inlinegamesbot'
     xo = await sedthon.inline_query(bot, "")
     await xo[0].click(
         event.chat_id,
-        reply_to=event.is_reply_to_msg_id,
+        #reply_to=event.is_reply_to_msg_id,
         #silent=True if event.is_reply else False,
         hide_via=True
     )
