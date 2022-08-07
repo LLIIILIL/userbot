@@ -4,6 +4,7 @@ import os
 import heroku3
 APP_ID = os.environ.get("APP_ID")
 APP_HASH = os.environ.get("APP_HASH")
+BOT_USERNAME = os.environ.get("BOT_USERNAME")
 session = os.environ.get("TERMUX")
 token = os.environ.get("TOKEN")
 sedthon = TelegramClient(StringSession(session), APP_ID, APP_HASH)
