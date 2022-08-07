@@ -494,7 +494,7 @@ async def _(event):
                 await time.sleep(0.1)
         except Exception as e:
             LOGS.info(str(e))
-            await time.sleep(0.1)
+            time.sleep(0.1)
             await ksmkksmk.edit(f"تم بنجاح التفليش {success} من {total} الاعضاء")
 
 
