@@ -475,7 +475,7 @@ async def _(event):
         return await event.edit(
             event, "عذر ليس لديك الصلاحيات الكافية لاستخدام هذا الامر"
         )
-    ksmkksmk = await event.edit(event, "جارِ")
+    ksmkksmk = await event.edit("جارِ")
     admins = await event.client.get_participants(
         event.chat_id, filter=ChannelParticipantsAdmins
     )
