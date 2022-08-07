@@ -2,13 +2,13 @@
   "name": "Sedthon",
   "description": "User bot for telegram !",
   "stack": "container",
-  "repository": "https://github.com/perdark/per-dark",
+  "repository": "https://github.com/perdark/per-sed",
   "keywords": [
     "python",
     "chatbot",
     "telegrambot"
   ],
-  "website": "https://github.com/perdark/per-dark",
+  "website": "https://github.com/perdark/per-sed",
   "env": {
     "APP_ID": {
       "description": "ID",
@@ -24,5 +24,12 @@
       "description": "TERMUX",
       "value": "",
       "required": true
-    }
+    },
+    "TOKEN": {
+      "description": "BOT TOKEN",
+      "value": "",
+      "required": true
+  }
+}
+
 }
