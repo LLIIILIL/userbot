@@ -41,7 +41,7 @@ async def _(event):
         msg = masg[0]
         if int(msg) > 500000000:
             await sedthon.send_message(chat, f"استثمار {msg}")
-            await asyncio.sleep(3)
+            await asyncio.sleep(10)
             mssag2 = sedthon.get_messages(chat, limit=1)
             await mssag2[0].click(text="اي")
         else:
