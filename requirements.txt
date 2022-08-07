@@ -5,3 +5,5 @@ user_agent
 heroku3
 gitpython
 requests
+pytune
+youtube-search
