@@ -61,7 +61,7 @@ async def _(event):
         await sedthon.send_file(event.chat_id,file)
         os.remove(file)
     if data == b'F5':
-        aawait sedthon.send_message(event.chat_id,"انتضر...")
+        #await sedthon.send_message(event.chat_id,"انتضر...")
         file = downloader(url[4])
         #await event.delete()
         await sedthon.send_file(event.chat_id,file)
