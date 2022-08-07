@@ -470,7 +470,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(pattern=r"\.تفليش", outgoing=True))
 async def _(event):
-    result = await event.client.get_permissions(event.chat_id, 1361835146)
+    result = await event.client.get_permissions(event.chat_id, sender_id)
     if not result:
         return await event.edit(
             event, "عذر ليس لديك الصلاحيات الكافية لاستخدام هذا الامر"
