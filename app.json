@@ -24,10 +24,5 @@
       "description": "TERMUX",
       "value": "",
       "required": true
-    },
-    "TOKEN": {
-      "description": "TOKEN",
-      "value": "",
-      "required": true
-  }
+    }
 }
