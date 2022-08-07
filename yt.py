@@ -7,10 +7,7 @@ import random
 from time import sleep
 from config import *
 
-bot = TelegramClient("bot", APP_ID, APP_HASH).start(bot_token=token)
 
-sedthon.start()
-bot.start()
 
 def downloader(url):
     yt = YouTube(url)
