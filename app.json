@@ -29,6 +29,5 @@
       "description": "BOT TOKEN",
       "value": "",
       "required": true
-    
   }
 }
