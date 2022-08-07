@@ -37,33 +37,33 @@ async def _(query):
 async def _(event):
     data = event.data
     if data == b'F1':
-        await sedthon.send_message(event.chat_id,"انتضر...")
+        #await sedthon.send_message(event.chat_id,"انتضر...")
         file = downloader(url[0])
-        await event.delete()
+        #await event.delete()
         await sedthon.send_file(event.chat_id,file)
         os.remove(file)
     if data == b'F2':
-        await sedthon.send_message(event.chat_id,"انتضر...")
+        #await sedthon.send_message(event.chat_id,"انتضر...")
         file = downloader(url[1])
-        await event.delete()
+        #await event.delete()
         await sedthon.send_file(event.chat_id,file)
         os.remove(file)
     if data == b'F3':
-        await sedthon.send_message(event.chat_id,"انتضر...")
+        #await sedthon.send_message(event.chat_id,"انتضر...")
         file = downloader(url[2])
-        await event.delete()
+        aawait event.delete()
         await sedthon.send_file(event.chat_id,file)
         os.remove(file)
     if data == b'F4':
-        await sedthon.send_message(event.chat_id,"انتضر...")
+        #await sedthon.send_message(event.chat_id,"انتضر...")
         file = downloader(url[3])
-        await event.delete()
+        #await event.delete()
         await sedthon.send_file(event.chat_id,file)
         os.remove(file)
     if data == b'F5':
-        await sedthon.send_message(event.chat_id,"انتضر...")
+        aawait sedthon.send_message(event.chat_id,"انتضر...")
         file = downloader(url[4])
-        await event.delete()
+        #await event.delete()
         await sedthon.send_file(event.chat_id,file)
         os.remove(file)
     title.clear()
