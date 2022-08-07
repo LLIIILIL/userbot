@@ -77,6 +77,6 @@ async def _(event):
     for v in results_dict['videos']:
         title.append(str(v['title']))
         url.append(f'https://www.youtube.com' + v['url_suffix'])
-    res = await sedthon.inline_query(f"@{BOT_USERNAME"},'search')
+    res = await sedthon.inline_query(f"@{BOT_USERNAME}",'search')
     await res[0].click(event.chat_id)
     await event.delete()
