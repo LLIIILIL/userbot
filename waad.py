@@ -43,7 +43,7 @@ async def _(event):
             await sedthon.send_message(chat, f"استثمار {msg}")
             await asyncio.sleep(20)
             mssag2 = await sedthon.get_messages(chat, limit=1)
-            await mssag2[0].click(text="اي")
+            await mssag2[0].click(text="اي ✅")
         else:
             await sedthon.send_message(chat, f"استثمار {msg}")
         await asyncio.sleep(1210)
