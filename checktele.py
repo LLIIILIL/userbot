@@ -10,41 +10,54 @@ import user_agent
 from user_agent import generate_user_agent
 import requests
 from user_agent import *
-from config import *
 from help import *
-abc = 'qwertyuiopasdfghjklzxcvbnm'
-abc2 = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+from config import *
+
+a = 'qwertyuiopasdfghjklzxcvbnm'
+b = 'qwertyuiopasdfghjklzxcvbnm1234567890'
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تشيكر تلي"))
 async def _(event):
     await event.edit(tele_checker)
 
-'''
+
 # كلايم عدد نوع قناة
 @sedthon.on(events.NewMessage(outgoing=True, pattern=".كلايم (.*)"))
 async def _(event):
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
     for i in range(int(msg[0])):
-        l1 = str(''.join(random.choice(abc)))
-        l2 = str(''.join(random.choice(abc)))
-        l3 = str(''.join(random.choice(abc)))
-        n1 = str(''.join(random.choice(abc2)))
-        n2 = str(''.join(random.choice(abc2)))
         username = ""
         ch = str(msg[2])
         choice = str(msg[1])
         if choice == "1":
-            username = l1+n1+n1+l1+l1+l1
-
+            c = d = random.choices(a)
+            d = random.choices(b)
+            f = [c[0], d[0], c[0], c[0], c[0], d[0]]
+            random.shuffle(f)
+            username = ''.join(f)
         if choice == "2":
-            username = l1+'_'+n1+'_'+n2
+            c = d = random.choices(a)
+            d = random.choices(b)
+            f = [c[0], "_", d[0], "_", d[0]]
+            username = ''.join(f)
 
         if choice == "3":
-            username = l1+n1+l1+n1+l1+n1
+            c = d = random.choices(a)
+            d = random.choices(b)
+            f = [c[0], c[0], c[0], c[0], c[0], d[0]]
+            random.shuffle(f)
+            username = ''.join(f)
 
         if choice == "4":
-            username = l1+n1+n2+"BOT"
+            a = 'qwertyuiopassdfghjklzxcvbnm'
+            b = '1234567890'
+            c = d = random.choices(a)
+            d = random.choices(b)
+            f = [c[0], c[0], d[0]]
+            random.shuffle(f)
+            username = ''.join(f)
+            username = username+'bot'
 
         url = "https://t.me/"+str(username)
         headers = {
@@ -66,7 +79,6 @@ async def _(event):
             await event.edit(f"Bad {username} ❌")
             time.sleep(0.3)
     await event.edit("تم الانتهاء من الفحص")
-'''
 
 # تثبيت يوزر قناة
 
