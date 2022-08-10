@@ -26,29 +26,34 @@ async def _(event):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=".كلايم (.*)"))
 async def _(event):
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
+    await event.edit("حسنا")
     for i in range(int(msg[0])):
         username = ""
         ch = str(msg[2])
         choice = str(msg[1])
         if choice == "1":
+            a = 'qwertyuiopassdfghjklzxcvbnm'
+            b = '1234567890'
             c = d = random.choices(a)
             d = random.choices(b)
             f = [c[0], d[0], c[0], c[0], c[0], d[0]]
             random.shuffle(f)
             username = ''.join(f)
         if choice == "2":
+            a = 'qwertyuiopassdfghjklzxcvbnm'
+            b = '1234567890'
             c = d = random.choices(a)
             d = random.choices(b)
             f = [c[0], "_", d[0], "_", d[0]]
             username = ''.join(f)
-
         if choice == "3":
+            a = 'qwertyuiopassdfghjklzxcvbnm'
+            b = '1234567890'
             c = d = random.choices(a)
             d = random.choices(b)
             f = [c[0], c[0], c[0], c[0], c[0], d[0]]
             random.shuffle(f)
             username = ''.join(f)
-
         if choice == "4":
             a = 'qwertyuiopassdfghjklzxcvbnm'
             b = '1234567890'
@@ -58,7 +63,6 @@ async def _(event):
             random.shuffle(f)
             username = ''.join(f)
             username = username+'bot'
-
         url = "https://t.me/"+str(username)
         headers = {
             "User-Agent": generate_user_agent(),
@@ -76,7 +80,6 @@ async def _(event):
             except:
                 await event.client.send_message(event.chat_id, f"Banned {username} ❌❌")
         else:
-            await event.edit(f"Bad {username} ❌")
             time.sleep(0.3)
     await event.edit("تم الانتهاء من الفحص")
 
