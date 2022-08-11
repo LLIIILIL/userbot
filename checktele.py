@@ -76,7 +76,7 @@ async def _(event):
         response = requests.get(url, headers=headers)
         if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
             await event.client.send_message(event.chat_id, f"Good {username} ✔️")
-            time.sleep(0.5)
+
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
@@ -84,8 +84,8 @@ async def _(event):
             except:
                 await event.client.send_message(event.chat_id, f"Banned {username} ❌❌")
         else:
-            time.sleep(0.3)
-    await event.edit("تم الانتهاء من الفحص")
+            pass
+    await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
 
 # تثبيت يوزر قناة
 
