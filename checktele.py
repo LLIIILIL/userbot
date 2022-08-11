@@ -42,9 +42,11 @@ async def _(event):
         if choice == "2":
             a = 'qwertyuiopassdfghjklzxcvbnm'
             b = '1234567890'
-            c = d = random.choices(a)
+            i = 'qwertyuiopassdfghjklzxcvbnm1234567890'
+            c = random.choices(a)
             d = random.choices(b)
-            f = [c[0], "_", d[0], "_", d[0]]
+            s = random.choices(i)
+            f = [c[0], "_", d[0], "_", s[0]]
             username = ''.join(f)
         if choice == "3":
             a = 'qwertyuiopassdfghjklzxcvbnm'
@@ -57,9 +59,11 @@ async def _(event):
         if choice == "4":
             a = 'qwertyuiopassdfghjklzxcvbnm'
             b = '1234567890'
-            c = d = random.choices(a)
+            i = 'qwertyuiopassdfghjklzxcvbnm1234567890'
+            c = random.choices(a)
             d = random.choices(b)
-            f = [c[0], c[0], d[0]]
+            s = random.choices(i)
+            f = [c[0], s[0], d[0]]
             random.shuffle(f)
             username = ''.join(f)
             username = username+'bot'
