@@ -142,5 +142,3 @@ async def _(event):
         await event.client.send_message(event.chat_id, f"Taked {username} ✔️✔️")
     except:
         await event.client.send_message(event.chat_id, f"Banned {username} ❌❌")
-print("Runnig")
-sedthon.run_until_disconnected()
