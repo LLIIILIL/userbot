@@ -39,6 +39,7 @@ async def _(event):
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
     await event.edit("حسنا")
     for i in range(int(msg[0])):
+        asyncio.sleep(0.3)
         username = ""
         ch = str(msg[2])
         choice = str(msg[1])
@@ -108,7 +109,7 @@ async def _(event):
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
             "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
-        asyncio.sleep(0.3)
+
         response = requests.get(url, headers=headers)
         if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
             await event.client.send_message(event.chat_id, f"Good {username} ✔️")
@@ -141,3 +142,5 @@ async def _(event):
         await event.client.send_message(event.chat_id, f"Taked {username} ✔️✔️")
     except:
         await event.client.send_message(event.chat_id, f"Banned {username} ❌❌")
+print("Runnig")
+sedthon.run_until_disconnected()
