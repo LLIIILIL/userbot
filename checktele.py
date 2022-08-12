@@ -19,7 +19,7 @@ b = '1234567890'
 e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
 x = "X"
 r = "R"
-banned = ["HMMMM"]
+banned = [""]
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تشيكر تلي"))
@@ -29,7 +29,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=".اليوزرات المبندة"))
 async def _(event):
-    await event.edit(" , ".join(banned))
+    await event.edit(banned)
 
 # كلايم عدد نوع قناة
 
