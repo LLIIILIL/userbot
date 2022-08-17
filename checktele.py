@@ -30,7 +30,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اليوزرات المبندة"))
 async def _(event):
-    await sedthon.send_file(event.chat_id, 'banned.text')
+    await sedthon.send_file(event.chat_id, 'banned.txt')
 
 # كلايم عدد نوع قناة
 
