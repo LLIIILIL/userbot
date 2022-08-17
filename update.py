@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, PickleType, UnicodeText
 BASE = declarative_base()
-engine = create_engine("sqlite:///sedthon.db", echo=True)
+engine = create_engine("sqlite:///sedthon.db", echo=False)
 
 
 class Cat_GlobalCollection(BASE):
