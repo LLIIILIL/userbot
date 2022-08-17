@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, PickleType, UnicodeText
 BASE = declarative_base()
-engine = create_engine("sqlite://sqlalchemy.sqlite", echo=True)
+engine = create_engine("sqlite:///sqlalchemy.sqlite", echo=True)
 
 
 class Cat_GlobalCollection(BASE):
