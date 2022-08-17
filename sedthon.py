@@ -18,7 +18,6 @@ import base64
 import datetime
 import sys
 import os
-from sqltable import *
 from calcu import *
 from checktele import *
 from help import *
