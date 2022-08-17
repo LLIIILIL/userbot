@@ -40,7 +40,7 @@ async def _(event):
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
     await event.edit("حسنا")
     for i in range(int(msg[0])):
-        asyncio.sleep(0.3)
+        await asyncio.sleep(0.3)
         username = ""
         ch = str(msg[2])
         choice = str(msg[1])
@@ -175,5 +175,5 @@ async def _(event):
             await event.client.send_message(event.chat_id, f"Taked {username} ✔️✔️")
         except:
             pass
-        asyncio.sleep(5)
+        await asyncio.sleep(5)
     await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
