@@ -168,11 +168,12 @@ async def _(event):
     msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
     username = str(msg[1])
     ch = str(msg[2])
-    for i in range(msg[0]):
+    for i in range(int(msg[0])):
         try:
             await sedthon(functions.channels.UpdateUsernameRequest(
                 channel=ch, username=username))
             await event.client.send_message(event.chat_id, f"Taked {username} ✔️✔️")
+            break
         except:
             pass
         await asyncio.sleep(5)
