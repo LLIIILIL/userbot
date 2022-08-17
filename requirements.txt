@@ -7,3 +7,7 @@ gitpython
 requests
 pytube
 youtube-search
+threading
+logging
+sqlalchemy
+asyncio
