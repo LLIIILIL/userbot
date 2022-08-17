@@ -300,7 +300,7 @@ async def _(event):
                 break
             except:
                 pass
-            await asyncio.sleep(5)
+            await asyncio.sleep(60)
         await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
     else:  # تثبيت يوزر قناة
         msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
