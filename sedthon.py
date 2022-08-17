@@ -18,6 +18,7 @@ import base64
 import datetime
 import sys
 import os
+from sqltable import *
 from calcu import *
 from checktele import *
 from help import *
@@ -842,5 +843,12 @@ async def _(event):
         unblocked_count = 1
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
+# Test
+
+
+'''@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
+async def _(event):
+    await event.edit("I'm Working !!!!!!!")
+'''
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
