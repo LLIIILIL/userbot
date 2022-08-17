@@ -845,9 +845,9 @@ async def _(event):
 # Test
 
 
-'''@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
 async def _(event):
     await event.edit("I'm Working !!!!!!!")
-'''
+
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
