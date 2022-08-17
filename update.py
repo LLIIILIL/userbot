@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import logging
 from asyncio import CancelledError
 from config import *
-
+from sqltable import *
 BASE = declarative_base()
 
 
