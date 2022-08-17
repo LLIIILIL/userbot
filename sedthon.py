@@ -71,12 +71,6 @@ async def _(event):
     )
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
-async def _(event):
-    await event.edit("j")
-    await os.execv(sys.executable, ['python'] + sys.argv)
-
-
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.سورس"))
 async def a(event):
     await event.edit("جارٍ")
@@ -844,10 +838,10 @@ async def _(event):
 
 # Test
 
-
+'''
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
 async def _(event):
     await event.edit("I'm Working !!!!!!!")
-
+'''
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
