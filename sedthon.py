@@ -25,7 +25,6 @@ from waad import *
 from toolen import *
 from trans import *
 from config import *
-from sql import *
 # -
 
 y = datetime.datetime.now().year
