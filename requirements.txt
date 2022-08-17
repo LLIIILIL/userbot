@@ -7,6 +7,5 @@ gitpython
 requests
 pytube
 youtube-search
-logging
 sqlalchemy
 asyncio
