@@ -25,6 +25,7 @@ from waad import *
 from toolen import *
 from trans import *
 from config import *
+from update import *
 # -
 
 y = datetime.datetime.now().year
@@ -321,6 +322,7 @@ async def spammer(event):
     await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
 # مؤقت ل سوبر اكس ناين
+
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.x9 (.*)"))
 async def spammer(event):
