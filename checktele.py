@@ -286,7 +286,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
 async def _(event):
-    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 0)
+    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
     if msg[0] == "تلقائي":  # تثبيت تلقائي عدد يوزر قناة
         await event.edit("حسناً")
         msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
