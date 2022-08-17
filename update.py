@@ -1,35 +1,11 @@
 import threading
 from telethon import events
-from sqlalchemy import Column, PickleType, UnicodeText, distinct, func
+from sqlalchemy import distinct, func
 from sqlalchemy.ext.declarative import declarative_base
 import logging
 from asyncio import CancelledError
 from config import *
 from sqltable import *
-BASE = declarative_base()
-
-
-class Cat_GlobalCollection(BASE):
-    __tablename__ = "sed_globalcollection"
-    keywoard = Column(UnicodeText, primary_key=True)
-    contents = Column(PickleType, primary_key=True, nullable=False)
-
-    def __init__(self, keywoard, contents):
-        self.keywoard = keywoard
-        self.contents = tuple(contents)
-
-    def __repr__(self):
-        return "<Cat Global Collection lists '%s' for %s>" % (
-            self.contents,
-            self.keywoard,
-        )
-
-    def __eq__(self, other):
-        return (
-            isinstance(other, Cat_GlobalCollection)
-            and self.keywoard == other.keywoard
-            and self.contents == other.contents
-        )
 
 
 Cat_GlobalCollection.__table__.create(checkfirst=True)
