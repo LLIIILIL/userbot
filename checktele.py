@@ -17,10 +17,10 @@ from config import *
 a = 'qwertyuiopassdfghjklzxcvbnm'
 b = '1234567890'
 e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
-banned = []
+
 with open("banned.txt", "r") as f:
     f = f.read().split()
-    banned.append(f)
+    banned = f
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تشيكر تلي"))
@@ -291,16 +291,26 @@ async def _(event):
         await event.edit("حسناً")
         msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
         username = str(msg[1])
+        url = "https://t.me/"+str(username)
+        headers = {
+            "User-Agent": generate_user_agent(),
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+
+        response = requests.get(url, headers=headers)
         ch = str(msg[2])
         for i in range(int(msg[0])):
-            try:
-                await sedthon(functions.channels.UpdateUsernameRequest(
-                    channel=ch, username=username))
-                await event.client.send_message(event.chat_id, f"Taked {username} ✔️✔️")
-                break
-            except:
+            if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
+                try:
+                    await sedthon(functions.channels.UpdateUsernameRequest(
+                        channel=ch, username=username))
+                    await event.client.send_message(event.chat_id, f"Taked {username} ✔️✔️")
+                except:
+                    pass
+            else:
                 pass
-            await asyncio.sleep(60)
+            await asyncio.sleep(5)
         await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
     else:  # تثبيت يوزر قناة
         msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
