@@ -25,7 +25,6 @@ from waad import *
 from toolen import *
 from trans import *
 from config import *
-from update import *
 # -
 
 y = datetime.datetime.now().year
@@ -839,10 +838,10 @@ async def _(event):
 # Test
 
 
-
+'''
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
 async def _(event):
     await event.edit("I'm Working !!!!!!!")
-
+'''
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
