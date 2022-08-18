@@ -151,7 +151,7 @@ async def _(event):
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
     if msg[0] == "تلقائي":  # تثبيت تلقائي عدد يوزر قناة
         msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
-        username = str(msg[1])
+        username = str(msg[2])
         url = "https://t.me/"+str(username)
         headers = {
             "User-Agent": generate_user_agent(),
@@ -160,7 +160,7 @@ async def _(event):
             "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
 
         response = requests.get(url, headers=headers)
-        ch = str(msg[2])
+        ch = str(msg[1])
         await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
         for i in range(int(msg[0])):
             if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
