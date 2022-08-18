@@ -1,3 +1,4 @@
+# This file didn't used in the userbot because it has error
 import threading
 from telethon import events
 from sqlalchemy import distinct, func
