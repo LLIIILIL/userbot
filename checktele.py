@@ -36,10 +36,10 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.كلايم (.*)"))
 async def _(event):
+    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
     ch = str(msg[2])
     choice = str(msg[1])
     await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
-    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
     for i in range(int(msg[0])):
         await asyncio.sleep(0.3)
         username = ""
