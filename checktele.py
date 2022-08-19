@@ -146,11 +146,10 @@ async def _(event):
                 username = ''.join(f)
             else:
                 pass
-        if choice == "6":
-            username = ''.join(random.choices(a, k=8))
 
         isav = check_user(username)
         if "Available" in isav:
+            await asyncio.sleep(0.5)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
@@ -168,7 +167,6 @@ async def _(event):
         else:
             pass
         trys += 1
-        await asyncio.sleep(0.5)
 
     isclaim.clear()
     isclaim.append("off")
@@ -202,15 +200,8 @@ async def _(event):
             else:
                 await event.edit("خطأ")
         for i in range(int(msg[0])):
-            url = "https://t.me/"+str(username)
-            headers = {
-                "User-Agent": generate_user_agent(),
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
-
-            response = requests.get(url, headers=headers)
-            if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
+            isav = check_user(username)
+            if "Available" in isav:
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
                         channel=ch, username=username))
@@ -229,7 +220,7 @@ async def _(event):
                 pass
             trys += 1
 
-            await asyncio.sleep(5)
+            await asyncio.sleep(2)
         trys = ""
         isclaim.clear()
         isclaim.append("off")
