@@ -161,6 +161,7 @@ async def _(event):
 
     isclaim.clear()
     isclaim.append("off")
+    trys = ""
     await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
 
 
@@ -218,7 +219,7 @@ async def _(event):
             trys += 1
 
             await asyncio.sleep(5)
-        trys = 0
+        trys = ""
         isclaim.clear()
         isclaim.append("off")
         await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
