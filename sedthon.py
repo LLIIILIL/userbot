@@ -27,6 +27,8 @@ from trans import *
 from config import *
 # -
 
+sedthon.start()
+
 y = datetime.datetime.now().year
 m = datetime.datetime.now().month
 dayy = datetime.datetime.now().day
