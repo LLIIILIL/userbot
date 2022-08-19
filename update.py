@@ -113,37 +113,3 @@ RESTARTING_APP = "re-starting heroku application"
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HEROKU_APP = heroku3.from_key(HEROKU_API_KEY).apps()[HEROKU_APP_NAME]
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
-async def upstream(event):
-    event = await event.edit("`Pulling the nekopack repo wait a sec ....`")
-    off_repo = "https://github.com/perdark/per-sed"
-    os.chdir("/app")
-    try:
-        txt = (
-            "`Oops.. Updater cannot continue due to "
-            + "some problems occured`\n\n**LOGTRACE:**\n"
-        )
-
-        repo = Repo()
-    except NoSuchPathError as error:
-        await event.edit(f"{txt}\n`directory {error} is not found`")
-        return repo.__del__()
-    except GitCommandError as error:
-        await event.edit(f"{txt}\n`Early failure! {error}`")
-        return repo.__del__()
-    except InvalidGitRepositoryError:
-        repo = Repo.init()
-        origin = repo.create_remote("upstream", off_repo)
-        origin.fetch()
-        repo.create_head("main", origin.refs.main)
-        repo.heads.main.set_tracking_branch(origin.refs.main)
-        repo.heads.main.checkout(True)
-    with contextlib.suppress(BaseException):
-        repo.create_remote("upstream", off_repo)
-    ac_br = repo.active_branch.name
-    ups_rem = repo.remote("upstream")
-    ups_rem.fetch(ac_br)
-    await event.edit("`Deploying userbot, please wait....`")
-    #await deploy(event, repo, ups_rem, ac_br, txt)
