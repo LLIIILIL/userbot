@@ -16,6 +16,8 @@ b = '1234567890'
 e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
 
 banned = []
+isclaim = ["off"]
+isauto = ["off"]
 with open("banned.txt", "r") as f:
     f = f.read().split()
     banned.append(f)
@@ -36,9 +38,12 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.كلايم (.*)"))
 async def _(event):
+    isclaim.clear()
+    isclaim.append("on")
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
     ch = str(msg[2])
     choice = str(msg[1])
+    trys = 0
     await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
     for i in range(int(msg[0])):
         await asyncio.sleep(0.3)
@@ -126,7 +131,6 @@ async def _(event):
 
         response = requests.get(url, headers=headers)
         if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
-            await asyncio.sleep(6)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
@@ -136,21 +140,41 @@ async def _(event):
 ''')
                 break
             except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
                 with open("banned.txt", "a") as f:
                     f.write(f"\n{username}")
             except:
-                await event.client.send_message(event.chat_id, "خطأ")
+                await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
                 break
         else:
             pass
+        trys += 1
+
+        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
+        async def _(event):
+            if "on" in isclaim:
+                msg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
+                await asyncio.sleep(2)
+                try:
+                    await event.delete()
+                except:
+                    pass
+            elif "off" in isclaim:
+                await event.edit("لايوجد كلايم شغال !")
+            else:
+                await event.edit("خطأ")
+    trys = 0
+    isclaim.clear()
+    isclaim.append("off")
     await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
 async def _(event):
+    trys = 0
     msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
     if msg[0] == "تلقائي":  # تثبيت تلقائي عدد يوزر قناة
+        isauto.clear()
+        isauto.append("on")
         msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
         username = str(msg[2])
         ch = str(msg[1])
@@ -177,16 +201,34 @@ async def _(event):
                     await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
                     break
                 except:
-                    await event.client.send_message(event.chat_id, "خطأ")
+                    await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
                     break
             else:
                 pass
+            trys += 1
+
+            @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
+            async def _(event):
+                if "on" in isauto:
+                    msg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
+                    await asyncio.sleep(2)
+                    try:
+                        await event.delete()
+                    except:
+                        pass
+                elif "off" in isauto:
+                    await event.edit("لايوجد كلايم شغال !")
+                else:
+                    await event.edit("خطأ")
             await asyncio.sleep(5)
+        trys = 0
+        isclaim.clear()
+        isclaim.append("off")
         await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
-    else:  # تثبيت يوزر قناة
+    if msg[0] == "يدوي":  # تثبيت يدوي يوزر قناة
         msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
-        username = str(msg[0])
-        ch = str(msg[1])
+        username = str(msg[1])
+        ch = str(msg[2])
         try:
             await sedthon(functions.channels.UpdateUsernameRequest(
                 channel=ch, username=username))
