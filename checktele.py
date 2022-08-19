@@ -1,3 +1,4 @@
+from concurrent.futures import thread
 import random
 import asyncio
 import telethon
@@ -146,8 +147,9 @@ async def _(event):
                 username = ''.join(f)
             else:
                 pass
-
-        isav = check_user(username)
+        if choice == "6":
+            username - "".join(random.choices(a, k=8))
+        isav = Thread(target=check_user(username))
         if "Available" in isav:
             await asyncio.sleep(0.5)
             try:
@@ -200,7 +202,7 @@ async def _(event):
             else:
                 await event.edit("خطأ")
         for i in range(int(msg[0])):
-            isav = check_user(username)
+            isav = Thread(target=check_user(username))
             if "Available" in isav:
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
