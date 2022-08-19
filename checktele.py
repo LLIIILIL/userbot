@@ -46,6 +46,19 @@ async def _(event):
     choice = str(msg[1])
     trys = 0
     await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
+
+    @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
+    async def _(event):
+        if "on" in isclaim:
+            masg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
+            await asyncio.sleep(2)
+            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
+        elif "off" in isclaim:
+            masg = await event.edit("لايوجد كلايم شغال !")
+            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
+
+        else:
+            await event.edit("خطأ")
     for i in range(int(msg[0])):
         username = ""
         if choice == "1":
@@ -149,19 +162,6 @@ async def _(event):
             pass
         trys += 1
         await asyncio.sleep(0.5)
-
-    @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
-    async def _(event):
-        if "on" in isclaim:
-            masg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
-            await asyncio.sleep(2)
-            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
-        elif "off" in isclaim:
-            masg = await event.edit("لايوجد كلايم شغال !")
-            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
-
-        else:
-            await event.edit("خطأ")
 
     isclaim.clear()
     isclaim.append("off")
