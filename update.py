@@ -1,5 +1,14 @@
 # This file didn't used in the userbot because it has error
 import threading
+import asyncio
+import contextlib
+import os
+import sys
+from asyncio import CancelledError
+import heroku3
+import urllib3
+from git import Repo
+from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from telethon import events
 from sqlalchemy import distinct, func
 from sqlalchemy.ext.declarative import declarative_base
@@ -9,6 +18,8 @@ from config import *
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, PickleType, UnicodeText
+import urllib3
+import heroku3
 BASE = declarative_base()
 engine = create_engine("sqlite:///sedthon.db", echo=False)
 
@@ -87,13 +98,57 @@ logging.basicConfig(
 )
 
 LOGS = logging.getLogger(__name__)
+Heroku = heroku3.from_key(HEROKU_API_KEY)
+heroku_api = "https://api.heroku.com"
+
+REPO_REMOTE_NAME = "temponame"
+IFFUCI_ACTIVE_BRANCH_NAME = "master"
+NO_HEROKU_APP_CFGD = "no heroku application found, but a key given? 😕 "
+HEROKU_GIT_REF_SPEC = "HEAD:refs/heads/master"
+RESTARTING_APP = "re-starting heroku application"
+IS_SELECTED_DIFFERENT_BRANCH = (
+    "looks like a custom branch {branch_name} "
+    "is being used:\n"
+    "in this case, Updater is unable to identify the branch to be updated."
+    "please check out to an official branch, and re-start the updater."
+)
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
-async def _(event):
-    "Restarts the bot !!"
+# -- Constants End -- #
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+requirements_path = os.path.join(
+    os.path.dirname(os.path.dirname(
+        os.path.dirname(__file__))), "requirements.txt"
+)
+HEROKU_APP = heroku3.from_key(HEROKU_API_KEY).apps()[HEROKU_APP_NAME]
+
+
+async def deploy(event, repo, ups_rem, ac_br, txt):
+    if HEROKU_API_KEY is None:
+        return await event.edit("`Please set up`  **HEROKU_API_KEY**  ` Var...`")
+    heroku = heroku3.from_key(HEROKU_API_KEY)
+    heroku_applications = heroku.apps()
+    if HEROKU_APP_NAME is None:
+        await event.edit(
+            "`Please set up the` **HEROKU_APP_NAME** `Var`"
+            " to be able to deploy your userbot...`"
+        )
+        repo.__del__()
+        return
+    heroku_app = next(
+        (app for app in heroku_applications if app.name == HEROKU_APP_NAME),
+        None,
+    )
+
+    if heroku_app is None:
+        await event.edit(
+            f"{txt}\n" "`Invalid Heroku credentials for deploying userbot dyno.`"
+        )
+        return repo.__del__()
     sandy = await event.edit(
-        "سيتم اعادة تشغيل السورس - انتضر 1-2 دقائق"
+        "`Userbot dyno build in progress, please wait until the process finishes it usually takes 4 to 5 minutes .`"
     )
     try:
         ulist = get_collectionlist_items()
@@ -106,9 +161,68 @@ async def _(event):
         add_to_collectionlist("restart_update", [sandy.chat_id, sandy.id])
     except Exception as e:
         LOGS.error(e)
+    ups_rem.fetch(ac_br)
+    repo.git.reset("--hard", "FETCH_HEAD")
+    heroku_git_url = heroku_app.git_url.replace(
+        "https://", f"https://api:{HEROKU_API_KEY}@"
+    )
+
+    if "heroku" in repo.remotes:
+        remote = repo.remote("heroku")
+        remote.set_url(heroku_git_url)
+    else:
+        remote = repo.create_remote("heroku", heroku_git_url)
     try:
-        await sedthon.disconnect()
-    except CancelledError:
-        pass
-    except Exception as e:
-        LOGS.error(e)
+        remote.push(refspec="HEAD:refs/heads/master", force=True)
+    except Exception as error:
+        await event.edit(f"{txt}\n**Error log:**\n`{error}`")
+        return repo.__del__()
+    build_status = heroku_app.builds(order_by="created_at", sort="desc")[0]
+    if build_status.status == "failed":
+        return await event.edit(
+            event, "`Build failed!\n" "Cancelled or there were some errors...`"
+        )
+    try:
+        remote.push("master:main", force=True)
+    except Exception as error:
+        await event.edit(f"{txt}\n**Here is the error log:**\n`{error}`")
+        return repo.__del__()
+    await event.edit("`Deploy was failed. So restarting to update`")
+    with contextlib.suppress(CancelledError):
+        await event.client.disconnect()
+        if HEROKU_APP is not None:
+            HEROKU_APP.restart()
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
+async def upstream(event):
+    event = await event.edit("`Pulling the nekopack repo wait a sec ....`")
+    off_repo = "https://github.com/TgCatUB/nekopack"
+    os.chdir("/app")
+    try:
+        txt = (
+            "`Oops.. Updater cannot continue due to "
+            + "some problems occured`\n\n**LOGTRACE:**\n"
+        )
+
+        repo = Repo()
+    except NoSuchPathError as error:
+        await event.edit(f"{txt}\n`directory {error} is not found`")
+        return repo.__del__()
+    except GitCommandError as error:
+        await event.edit(f"{txt}\n`Early failure! {error}`")
+        return repo.__del__()
+    except InvalidGitRepositoryError:
+        repo = Repo.init()
+        origin = repo.create_remote("upstream", off_repo)
+        origin.fetch()
+        repo.create_head("master", origin.refs.master)
+        repo.heads.master.set_tracking_branch(origin.refs.master)
+        repo.heads.master.checkout(True)
+    with contextlib.suppress(BaseException):
+        repo.create_remote("upstream", off_repo)
+    ac_br = repo.active_branch.name
+    ups_rem = repo.remote("upstream")
+    ups_rem.fetch(ac_br)
+    await event.edit("`Deploying userbot, please wait....`")
+    await deploy(event, repo, ups_rem, ac_br, txt)
