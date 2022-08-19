@@ -10,7 +10,7 @@ import requests
 from user_agent import *
 from help import *
 from config import *
-from telethon.tl.functions.messages.delete_messages import DeleteMessagesRequest
+from telethon.tl.functions.messages import DeleteMessagesRequest
 
 a = 'qwertyuiopassdfghjklzxcvbnm'
 b = '1234567890'
@@ -152,17 +152,16 @@ async def _(event):
 
     @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
     async def _(event):
-            if "on" in isclaim:
-                msg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
-                await asyncio.sleep(2)
-                try:
-                    await event.delete()
-                except:
-                    pass
-            elif "off" in isclaim:
-                await event.edit("لايوجد كلايم شغال !")
-            else:
-                await event.edit("خطأ")
+        if "on" in isclaim:
+            masg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
+            await asyncio.sleep(2)
+            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
+        elif "off" in isclaim:
+            masg = await event.edit("لايوجد كلايم شغال !")
+            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
+
+        else:
+            await event.edit("خطأ")
 
     isclaim.clear()
     isclaim.append("off")
