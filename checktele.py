@@ -149,7 +149,7 @@ async def _(event):
                 pass
         if choice == "6":
             username = "".join(random.choices(a, k=8))
-        isav = Thread(target=check_user(username))
+        isav = check_user(username)
         if "Available" in isav:
             await asyncio.sleep(0.5)
             try:
