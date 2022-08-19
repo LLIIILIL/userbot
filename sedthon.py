@@ -838,5 +838,10 @@ async def _(event):
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
 
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
+async def update(event):
+    await event.edit("• جارِ اعادة تشغيل السورس ..\n• في حال الاكتمال سيتم تنبيهك .")
+    await sedthon.disconnect()
+    await event.edit("• لقد اكتمبت اعادة تشغيل السورس !")
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
