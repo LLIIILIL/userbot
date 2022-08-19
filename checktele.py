@@ -46,7 +46,6 @@ async def _(event):
     trys = 0
     await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
     for i in range(int(msg[0])):
-        await asyncio.sleep(0.3)
         username = ""
         if choice == "1":
             c = d = random.choices(a)
@@ -148,6 +147,7 @@ async def _(event):
         else:
             pass
         trys += 1
+        await asyncio.sleep(0.5)
 
         @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
         async def _(event):
