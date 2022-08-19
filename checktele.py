@@ -11,7 +11,7 @@ from user_agent import *
 from help import *
 from config import *
 from telethon.tl.functions.messages import DeleteMessagesRequest
-
+from threading import Thread
 a = 'qwertyuiopassdfghjklzxcvbnm'
 b = '1234567890'
 e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
@@ -22,6 +22,21 @@ isauto = ["off"]
 with open("banned.txt", "r") as f:
     f = f.read().split()
     banned.append(f)
+
+
+def check_user(username):
+    url = "https://t.me/"+str(username)
+    headers = {
+        "User-Agent": generate_user_agent(),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+
+    response = requests.get(url, headers=headers)
+    if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
+        return "Available"
+    else:
+        return "Unavailable"
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تشيكر تلي"))
@@ -131,15 +146,11 @@ async def _(event):
                 username = ''.join(f)
             else:
                 pass
-        url = "https://t.me/"+str(username)
-        headers = {
-            "User-Agent": generate_user_agent(),
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"}
+        if choice == "6":
+            username = ''.join(random.choices(a, k=8))
 
-        response = requests.get(url, headers=headers)
-        if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
+        isav = check_user(username)
+        if "Available" in isav:
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
