@@ -89,7 +89,7 @@ logging.basicConfig(
 LOGS = logging.getLogger(__name__)
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def _(event):
     "Restarts the bot !!"
     sandy = await event.edit(
