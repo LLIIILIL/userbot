@@ -126,7 +126,7 @@ async def _(event):
 
         response = requests.get(url, headers=headers)
         if response.text.find('If you have <strong>Telegram</strong>, you can contact <a class="tgme_username_link"') >= 0:
-            await asyncio.sleep(3)
+            await asyncio.sleep(6)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
