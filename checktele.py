@@ -162,7 +162,7 @@ async def _(event):
                 await event.edit("لايوجد كلايم شغال !")
             else:
                 await event.edit("خطأ")
-    trys = 0
+
     isclaim.clear()
     isclaim.append("off")
     await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
