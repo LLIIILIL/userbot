@@ -98,18 +98,3 @@ logging.basicConfig(
 )
 
 LOGS = logging.getLogger(__name__)
-Heroku = heroku3.from_key(HEROKU_API_KEY)
-heroku_api = "https://api.heroku.com"
-
-REPO_REMOTE_NAME = "temponame"
-IFFUCI_ACTIVE_BRANCH_NAME = "main"
-NO_HEROKU_APP_CFGD = "no heroku application found, but a key given? 😕 "
-HEROKU_GIT_REF_SPEC = "HEAD:refs/heads/main"
-RESTARTING_APP = "re-starting heroku application"
-
-
-# -- Constants End -- #
-
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-HEROKU_APP = heroku3.from_key(HEROKU_API_KEY).apps()[HEROKU_APP_NAME]
