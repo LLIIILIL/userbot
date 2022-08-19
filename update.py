@@ -187,7 +187,7 @@ async def deploy(event, repo, ups_rem, ac_br, txt):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تحديث"))
 async def upstream(event):
     event = await event.edit("`Pulling the nekopack repo wait a sec ....`")
-    off_repo = "https://github.com/TgCatUB/nekopack"
+    off_repo = "https://github.com/perdark/per-sed"
     os.chdir("/app")
     try:
         txt = (
