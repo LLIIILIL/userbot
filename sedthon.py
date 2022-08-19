@@ -254,6 +254,7 @@ async def gcast(event):
                 if chat not in GCAST_BLACKLIST:
                     await event.client.send_message(chat, msg)
                     done += 1
+                    asyncio.sleep(1)
             except BaseException:
                 er += 1
     await roz.edit(
@@ -283,6 +284,7 @@ async def gucast(event):
                 if chat not in DEVS:
                     await event.client.send_message(chat, msg)
                     done += 1
+                    asyncio.sleep(1)
             except BaseException:
                 er += 1
     await roz.edit(
@@ -835,13 +837,6 @@ async def _(event):
         unblocked_count = 1
         razan = await event.edit(f'تم الغاء حظر : {len(list.blocked)}')
 
-# Test
 
-
-'''
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
-async def _(event):
-    await event.edit("I'm Working !!!!!!!")
-'''
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
