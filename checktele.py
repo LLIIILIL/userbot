@@ -50,13 +50,9 @@ async def _(event):
     @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
     async def _(event):
         if "on" in isclaim:
-            masg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
-            await asyncio.sleep(2)
-            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
+            await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
         elif "off" in isclaim:
-            masg = await event.edit("لايوجد كلايم شغال !")
-            await sedthon.inkove(DeleteMessagesRequest(masg.chat.id, masg.id))
-
+            await event.edit("لايوجد كلايم شغال !")
         else:
             await event.edit("خطأ")
     for i in range(int(msg[0])):
@@ -166,7 +162,6 @@ async def _(event):
     isclaim.clear()
     isclaim.append("off")
     await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
-    trys = 0
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
@@ -180,6 +175,20 @@ async def _(event):
         username = str(msg[2])
         ch = str(msg[1])
         await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
+
+        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة التثبيت التلقائي"))
+        async def _(event):
+            if "on" in isauto:
+                msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
+                await asyncio.sleep(2)
+                try:
+                    await event.delete()
+                except:
+                    pass
+            elif "off" in isauto:
+                await event.edit("لايوجد تثبيت شغال !")
+            else:
+                await event.edit("خطأ")
         for i in range(int(msg[0])):
             url = "https://t.me/"+str(username)
             headers = {
@@ -208,19 +217,6 @@ async def _(event):
                 pass
             trys += 1
 
-            @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة التثبيت التلقائي"))
-            async def _(event):
-                if "on" in isauto:
-                    msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
-                    await asyncio.sleep(2)
-                    try:
-                        await event.delete()
-                    except:
-                        pass
-                elif "off" in isauto:
-                    await event.edit("لايوجد تثبيت شغال !")
-                else:
-                    await event.edit("خطأ")
             await asyncio.sleep(5)
         trys = 0
         isclaim.clear()
