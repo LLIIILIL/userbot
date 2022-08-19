@@ -207,17 +207,17 @@ async def _(event):
                 pass
             trys += 1
 
-            @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
+            @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة التثبيت التلقائي"))
             async def _(event):
                 if "on" in isauto:
-                    msg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
+                    msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
                     await asyncio.sleep(2)
                     try:
                         await event.delete()
                     except:
                         pass
                 elif "off" in isauto:
-                    await event.edit("لايوجد كلايم شغال !")
+                    await event.edit("لايوجد تثبيت شغال !")
                 else:
                     await event.edit("خطأ")
             await asyncio.sleep(5)
