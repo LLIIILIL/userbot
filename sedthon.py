@@ -25,6 +25,7 @@ from waad import *
 from toolen import *
 from trans import *
 from config import *
+from update import *
 # -
 
 sedthon.start()
@@ -845,5 +846,11 @@ async def update(event):
     await event.edit("• جارِ اعادة تشغيل السورس ..\n• في حال الاكتمال سيتم تنبيهك .")
     await sedthon.disconnect()
     await event.edit("• لقد اكتمبت اعادة تشغيل السورس !")
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
+async def update(event):
+    await event.edit("Oh")
+
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
