@@ -11,5 +11,6 @@ sedthon = TelegramClient(StringSession(session), APP_ID, APP_HASH)
 bot = TelegramClient("bot", APP_ID, APP_HASH).start(bot_token=token)
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY")
-UPSTREAM_REPO_BRANCH = os.environ.get("UPSTREAM_REPO_BRANCH", "master")
+UPSTREAM_REPO_BRANCH = os.environ.get(
+    'https://github.com/perdark/per-sed/blob/main/')
 bot.start()
