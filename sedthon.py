@@ -25,7 +25,7 @@ from waad import *
 from toolen import *
 from trans import *
 from config import *
-from update import *
+#from update import *
 # -
 
 sedthon.start()
