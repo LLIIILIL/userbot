@@ -10,6 +10,7 @@ import requests
 from user_agent import *
 from help import *
 from config import *
+from telethon.tl.functions.messages.delete_messages import DeleteMessagesRequest
 
 a = 'qwertyuiopassdfghjklzxcvbnm'
 b = '1234567890'
@@ -149,8 +150,8 @@ async def _(event):
         trys += 1
         await asyncio.sleep(0.5)
 
-        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
-        async def _(event):
+    @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
+    async def _(event):
             if "on" in isclaim:
                 msg = await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
                 await asyncio.sleep(2)
@@ -166,6 +167,7 @@ async def _(event):
     isclaim.clear()
     isclaim.append("off")
     await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
+    trys = 0
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
