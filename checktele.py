@@ -150,8 +150,9 @@ async def _(event):
                 pass
         if choice == "6":
             username = "".join(random.choices(a, k=8))
+        user=username
         pool = ThreadPool(processes=1)
-        async_result = pool.apply_async(check_user, username)
+        async_result = pool.apply_async(check_user, user)
         isav = async_result.get()
         if "Available" in isav:
             await asyncio.sleep(0.5)
