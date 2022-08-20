@@ -25,7 +25,19 @@ with open("banned.txt", "r") as f:
     f = f.read().split()
     banned.append(f)
 
-
+class thv(Thread):
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs={}, Verbose=None):
+        Thread.__init__(self, group, target, name, args, kwargs)
+        self._return = None
+    def run(self):
+        print(type(self._target))
+        if self._target is not None:
+            self._return = self._target(*self._args,
+                                                **self._kwargs)
+    def join(self, *args):
+        Thread.join(self, *args)
+        return self._return
 def check_user(username):
     url = "https://t.me/"+str(username)
     headers = {
@@ -150,10 +162,8 @@ async def _(event):
                 pass
         if choice == "6":
             username = "".join(random.choices(a, k=8))
-        user=username
-        pool = ThreadPool(processes=1)
-        async_result = pool.apply_async(check_user, user)
-        isav = async_result.get()
+        isav = th(target=check_user, args=(username,))
+        isav.start()
         if "Available" in isav:
             await asyncio.sleep(0.5)
             try:
