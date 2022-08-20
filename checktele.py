@@ -162,7 +162,7 @@ async def _(event):
                 pass
         if choice == "6":
             username = "".join(random.choices(a, k=8))
-        isav = th(target=check_user, args=(username,))
+        isav = thv(target=check_user, args=(username,))
         isav.start()
         if "Available" in isav:
             await asyncio.sleep(0.5)
