@@ -1,4 +1,5 @@
 from concurrent.futures import thread
+from multiprocessing.pool import ThreadPool
 import random
 import asyncio
 import telethon
@@ -149,7 +150,9 @@ async def _(event):
                 pass
         if choice == "6":
             username = "".join(random.choices(a, k=8))
-        isav = check_user(username)
+        pool = ThreadPool(processes=1)
+        async_result = pool.apply_async(checktele, (username))
+        isav = async_result.get()
         if "Available" in isav:
             await asyncio.sleep(0.5)
             try:
