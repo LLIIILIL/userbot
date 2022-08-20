@@ -217,7 +217,7 @@ async def _(event):
             else:
                 await event.edit("خطأ")
         for i in range(int(msg[0])):
-            isav = Thread(target=check_user(username))
+            isav = check_user(username)
             if "Available" in isav:
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
