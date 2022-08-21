@@ -203,7 +203,7 @@ async def _(event):
                     f.write(f"\n{username}")
             except Exception as e:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                await event.edit(e)
+                print(e)
                 break
         else:
             pass
