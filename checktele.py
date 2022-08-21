@@ -25,6 +25,22 @@ with open("banned.txt", "r") as f:
     banned.append(f)
 
 
+class thv(Thread):
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs={}, Verbose=None):
+        Thread.__init__(self, group, target, name, args, kwargs, Verbose)
+        self._return = None
+
+    def run(self):
+        if self._Thread__target is not None:
+            self._return = self._Thread__target(*self._Thread__args,
+                                                **self._Thread__kwargs)
+
+    def join(self):
+        Thread.join(self)
+        return self._return
+
+
 def check_user(username):
     url = "https://t.me/"+str(username)
     headers = {
@@ -175,7 +191,7 @@ async def _(event):
                 f = [c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
-        isavv =thv(target=check_user,args=username)
+        isavv = thv(target=check_user, args=username)
         isavv.start()
         isav = isavv.join()
         if "Available" in isav:
