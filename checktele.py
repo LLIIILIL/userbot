@@ -203,7 +203,7 @@ async def _(event):
                     f.write(f"\n{username}")
             except Exception as jjj:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                await sedthon.send_message(event.chat_id,jjj)
+                print(jjj)
                 break
         else:
             pass
@@ -256,7 +256,7 @@ async def _(event):
                     break
                 except Exception as jjj:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                    await sedthon.send_message(event.chat_id,jjj)
+                    print(jjj)
                     break
             else:
                 pass
