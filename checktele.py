@@ -4,6 +4,7 @@ import asyncio
 import telethon
 from telethon.tl import functions, types
 from telethon import events
+from queue import Queue
 import requests
 from telethon.sync import functions, types
 from user_agent import generate_user_agent
@@ -24,20 +25,7 @@ with open("banned.txt", "r") as f:
     f = f.read().split()
     banned.append(f)
 
-
-class thv(Thread):
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs={}, Verbose=None):
-        Thread.__init__(self, group, target, name, args, kwargs)
-        self._return = None
-    def run(self):
-        print(type(self._target))
-        if self._target is not None:
-            self._return = self._target(*self._args,
-                                                **self._kwargs)
-    def join(self, *args):
-        Thread.join(self, *args)
-        return self._return
+que = Queue()
 
 
 def check_user(username):
@@ -190,9 +178,11 @@ async def _(event):
                 f = [c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
-        isavv = thv(target=check_user, args=username)
-        isavv.start()
-        isav = isavv.join()
+        t = Thread(target=lambda q, arg1: q.put(
+            check_user(arg1)), args=(que, username))
+        t.start()
+        t.join()
+        isav = que.get()
         if "Available" in isav:
             await asyncio.sleep(0.5)
             try:
