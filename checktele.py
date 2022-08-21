@@ -189,7 +189,7 @@ async def _(event):
         isavv.start()
         isav = isavv.join()
         if "Available" in isav:
-            await sesthon.send_message(event.chat_id,username)
+            await sedthon.send_message(event.chat_id,username)
             await asyncio.sleep(0.1)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
