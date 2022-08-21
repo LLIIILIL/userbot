@@ -28,16 +28,15 @@ with open("banned.txt", "r") as f:
 class thv(Thread):
     def __init__(self, group=None, target=None, name=None,
                  args=(), kwargs={}, Verbose=None):
-        Thread.__init__(self, group, target, name, args, kwargs, Verbose)
+        Thread.__init__(self, group, target, name, args, kwargs)
         self._return = None
-
     def run(self):
-        if self._Thread__target is not None:
-            self._return = self._Thread__target(*self._Thread__args,
-                                                **self._Thread__kwargs)
-
-    def join(self):
-        Thread.join(self)
+        print(type(self._target))
+        if self._target is not None:
+            self._return = self._target(*self._args,
+                                                **self._kwargs)
+    def join(self, *args):
+        Thread.join(self, *args)
         return self._return
 
 
