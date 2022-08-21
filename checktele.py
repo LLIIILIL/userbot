@@ -196,8 +196,9 @@ async def _(event):
             except telethon.errors.rpcerrorlist.UsernameInvalidError:
                 with open("banned.txt", "a") as f:
                     f.write(f"\n{username}")
-            except:
+            except Exception as eee:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
+                await sedthon.send_message(event.chat_id, eee)
                 break
         else:
             pass
@@ -248,9 +249,9 @@ async def _(event):
                 except telethon.errors.rpcerrorlist.UsernameInvalidError:
                     await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
                     break
-                except:
+                except Exception as eee:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                    break
+                    await sedthon.send_message(event.chat_id, eee)
             else:
                 pass
             trys += 1
