@@ -185,9 +185,7 @@ async def _(event):
                 f = [c[0], c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
-        isavv = thv(target=check_user, args=(username,))
-        isavv.start()
-        isav = isavv.join()
+        isavv = check_user(username)
         if "Available" in isav:
             await asyncio.sleep(0.1)
             try:
