@@ -1,5 +1,4 @@
 from concurrent.futures import thread
-from multiprocessing.pool import ThreadPool
 import random
 import asyncio
 import telethon
@@ -25,19 +24,7 @@ with open("banned.txt", "r") as f:
     f = f.read().split()
     banned.append(f)
 
-class thv(Thread):
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs={}, Verbose=None):
-        Thread.__init__(self, group, target, name, args, kwargs)
-        self._return = None
-    def run(self):
-        print(type(self._target))
-        if self._target is not None:
-            self._return = self._target(*self._args,
-                                                **self._kwargs)
-    def join(self, *args):
-        Thread.join(self, *args)
-        return self._return
+
 def check_user(username):
     url = "https://t.me/"+str(username)
     headers = {
@@ -62,6 +49,10 @@ async def _(event):
 async def _(event):
     await sedthon.send_file(event.chat_id, 'banned.txt')
 
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الانواع"))
+async def _(event):
+    await event.edit(tele_checker2)
 
 # كلايم عدد نوع قناة
 
@@ -163,33 +154,20 @@ async def _(event):
         if choice == "6":
             c = d = random.choices(a)
             d = random.choices(b)
-            f = [c[0], c[0], c[0], c[0],c[0], c[0], d[0]]
-            random.shuffle(f)
-            username = ''.join(f)
-            if username in banned[0]:
-                c = d = random.choices(a)
-                d = random.choices(b)
-                f = [c[0], c[0], c[0], c[0], c[0], d[0]]
-                random.shuffle(f)
-                username = ''.join(f)
-        isavv = thv(target=check_user, args=(username,))
-        if choice == "7" :
-            c = d = random.choices(a)
-            d = random.choices(b)
             f = [c[0], c[0], c[0], c[0], d[0]]
             random.shuffle(f)
             username = ''.join(f)
             if username in banned[0]:
                 c = d = random.choices(a)
                 d = random.choices(b)
-                f = [c[0], c[0], c[0], c[0], c[0], d[0]]
+                f = [c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
-        isavv =thv(target=check_user,args=username)
+        isavv = Thread(target=check_user(username))
         isavv.start()
         isav = isavv.join()
         if "Available" in isav:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.5)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
@@ -201,9 +179,8 @@ async def _(event):
             except telethon.errors.rpcerrorlist.UsernameInvalidError:
                 with open("banned.txt", "a") as f:
                     f.write(f"\n{username}")
-            except Exception as jjj:
+            except:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                await sedthon.send_message(event.chat_id,str(jjj))
                 break
         else:
             pass
@@ -241,9 +218,8 @@ async def _(event):
             else:
                 await event.edit("خطأ")
         for i in range(int(msg[0])):
-            isav = check_user(username)
+            isav = Thread(target=check_user(username))
             if "Available" in isav:
-                
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
                         channel=ch, username=username))
@@ -255,9 +231,8 @@ async def _(event):
                 except telethon.errors.rpcerrorlist.UsernameInvalidError:
                     await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
                     break
-                except Exception as jjj:
+                except:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                    await sedthon.send_message(event.chat_id,str(jjj))
                     break
             else:
                 pass
