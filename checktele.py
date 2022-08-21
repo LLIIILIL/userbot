@@ -256,7 +256,7 @@ async def _(event):
                     break
                 except Exception as jjj:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                    print(jjj)
+                    await print(jjj)
                     break
             else:
                 pass
