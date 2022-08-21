@@ -175,7 +175,7 @@ async def _(event):
                 f = [c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
-        isavv = Thread(target=check_user(username))
+        isavv =thv(target=check_user,args=username)
         isavv.start()
         isav = isavv.join()
         if "Available" in isav:
