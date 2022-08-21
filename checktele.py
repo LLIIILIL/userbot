@@ -161,12 +161,34 @@ async def _(event):
             else:
                 pass
         if choice == "6":
-            username = "".join(random.choices(a, k=8))
+            c = d = random.choices(a)
+            d = random.choices(b)
+            f = [c[0], c[0], c[0], c[0],c[0], c[0], d[0]]
+            random.shuffle(f)
+            username = ''.join(f)
+            if username in banned[0]:
+                c = d = random.choices(a)
+                d = random.choices(b)
+                f = [c[0], c[0], c[0], c[0], c[0], d[0]]
+                random.shuffle(f)
+                username = ''.join(f)
+        isavv = thv(target=check_user, args=(username,))
+        if choice == "7" :
+            c = d = random.choices(a)
+            d = random.choices(b)
+            f = [c[0], c[0], c[0], c[0], d[0]]
+            random.shuffle(f)
+            username = ''.join(f)
+            if username in banned[0]:
+                c = d = random.choices(a)
+                d = random.choices(b)
+                f = [c[0], c[0], c[0], c[0], c[0], d[0]]
+                random.shuffle(f)
+                username = ''.join(f)
         isavv = thv(target=check_user, args=(username,))
         isavv.start()
         isav = isavv.join()
         if "Available" in isav:
-            await asyncio.sleep(0.5)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
