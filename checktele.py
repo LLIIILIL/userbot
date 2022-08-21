@@ -189,7 +189,7 @@ async def _(event):
         isavv.start()
         isav = isavv.join()
         if "Available" in isav:
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.1)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
@@ -201,8 +201,9 @@ async def _(event):
             except telethon.errors.rpcerrorlist.UsernameInvalidError:
                 with open("banned.txt", "a") as f:
                     f.write(f"\n{username}")
-            except:
+            except Exception as e:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
+                await event.edit(e)
                 break
         else:
             pass
