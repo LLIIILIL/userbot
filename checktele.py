@@ -1,18 +1,15 @@
-from concurrent.futures import thread
 import random
 import asyncio
 import telethon
-from telethon.tl import functions, types
 from telethon import events
 from queue import Queue
 import requests
-from telethon.sync import functions, types
+from telethon.sync import functions
 from user_agent import generate_user_agent
 import requests
 from user_agent import *
 from help import *
 from config import *
-from telethon.tl.functions.messages import DeleteMessagesRequest
 from threading import Thread
 a = 'qwertyuiopassdfghjklzxcvbnm'
 b = '1234567890'
@@ -198,7 +195,7 @@ async def _(event):
                     f.write(f"\n{username}")
             except Exception as eee:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                await sedthon.send_message(event.chat_id, eee)
+                await sedthon.send_message(event.chat_id, str(eee))
                 break
         else:
             pass
@@ -251,7 +248,8 @@ async def _(event):
                     break
                 except Exception as eee:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                    await sedthon.send_message(event.chat_id, eee)
+                    await sedthon.send_message(event.chat_id, str(eee))
+
             else:
                 pass
             trys += 1
