@@ -1,9 +1,14 @@
 from telethon.errors.rpcerrorlist import YouBlockedUserError
+from telethon.tl import functions
+from telethon.tl.types import (
+    ChannelParticipantsAdmins,
+)
 from hijri_converter import Gregorian
 from telethon.tl import functions
 from telethon.tl.types import (
     ChannelParticipantsAdmins
 )
+
 from telethon.tl.functions.channels import LeaveChannelRequest
 from collections import deque
 from telethon import events
@@ -16,8 +21,6 @@ import asyncio
 import logging
 import base64
 import datetime
-import sys
-import os
 from calcu import *
 from checktele import *
 from help import *
@@ -59,6 +62,26 @@ async def join_channel():
         await sedthon(JoinChannelRequest("@sedthon"))
     except BaseException:
         pass
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تفليش"))
+async def _(event):
+    await event.delete()
+    messagelocation = event.to_id
+    async for user in event.sedthon.iter_participants(messagelocation):
+        user_id = user.id
+        try:
+            await event.sedthon.edit_permissions(messagelocation, user_id, view_messages=False)
+        except:
+            pass
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو"))
+async def _(event):
+    user = (await event.get_sender()).id
+    r = await client(functions.users.GetFullUserRequest(id=user))
+    r = r.about
+    await event.edit(f"`{r}`")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اكس او"))
@@ -843,14 +866,10 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة تشغيل"))
 async def update(event):
-    await event.edit("• جارِ اعادة تشغيل السورس ..\n• في حال الاكتمال سيتم تنبيهك .")
+    await event.edit("• جارِ اعادة تشغيل السورس ..\n• انتضر 1-2 دقيقة  .")
     await sedthon.disconnect()
-    await event.edit("• لقد اكتمبت اعادة تشغيل السورس !")
+    await sedthon.send_message("me", "`اكتملت اعادة تشغيل السورس !`")
 
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تيست"))
-async def update(event):
-    await event.edit("Oh")
 
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
