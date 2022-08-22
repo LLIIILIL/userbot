@@ -69,8 +69,8 @@ async def _(event):
     await event.delete()
     messagelocation = event.to_id
     async for user in sedthon.iter_participants(messagelocation):
-      user_id = user.id
-       try:
+        user_id = user.id
+        try:
             await sedthon.edit_permissions(messagelocation, user_id, view_messages=False)
         except:
             pass
