@@ -254,7 +254,7 @@ async def _(event):
                 except Exception as eee:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
                     await sedthon.send_message(event.chat_id, str(eee))
-    await sedthon.send_message(event.chat_id,"تم الانتهاء من التثبيت التلقائي")
+                await sedthon.send_message(event.chat_id,"تم الانتهاء من التثبيت التلقائي")
             else:
                 pass
             trys += 1
