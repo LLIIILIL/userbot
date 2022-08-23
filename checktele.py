@@ -197,7 +197,10 @@ async def _(event):
                 await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
 الخطأ :
 {str(eee)}''')
-                await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
+                if "A wait of" in str(eee):
+                    break
+                else:
+                    await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
         else:
             pass
         trys += 1
@@ -247,17 +250,17 @@ async def _(event):
                     await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
                     break
                 except Exception as eee:
-                    if "already used" in str(eee):
-                        pass
-                    else:
-                        await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+
+                    await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
 الخطأ :
 {str(eee)}''')
+                    if "A wait of" in str(eee):
+                        break
             else:
                 pass
             trys += 1
 
-            await asyncio.sleep(5)
+            await asyncio.sleep(15)
         trys = ""
         isclaim.clear()
         isclaim.append("off")
