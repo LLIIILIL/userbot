@@ -195,8 +195,9 @@ async def _(event):
                     f.write(f"\n{username}")
             except Exception as eee:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                await sedthon.send_message(event.chat_id, str(eee))
-                break
+                await sedthon.send_message(event.chat_id, f'''
+الخطأ : 
+str(eee)''')
         else:
             pass
         trys += 1
@@ -233,7 +234,11 @@ async def _(event):
             else:
                 await event.edit("خطأ")
         for i in range(int(msg[0])):
-            isav = Thread(target=check_user(username))
+            t = Thread(target=lambda q, arg1: q.put(
+            check_user(arg1)), args=(que, username))
+            t.start()
+            t.join()
+            isav = que.get()
             if "Available" in isav:
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
@@ -249,7 +254,7 @@ async def _(event):
                 except Exception as eee:
                     await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
                     await sedthon.send_message(event.chat_id, str(eee))
-
+    await sedthon.send_message(event.chat_id,"تم الانتهاء من التثبيت التلقائي")
             else:
                 pass
             trys += 1
