@@ -17,17 +17,15 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تجميع المليار"))
 async def _(event):
+    await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
     channel_entity = await sedthon.get_entity(bot_username)
-    try:
-        await sedthon.send_message('@t06bot', '/start')
-        asyncio.sleep(2)
-        msg0 = await sedthon.get_messages('@t06bot', limit=1)
-        msg0[0].click(2)
-        asyncio.sleep(2)
-        msg1 = await sedthon.get_messages('@t06bot', limit=1)
-        msg1[0].click(0)
-    except:
-        await sedthon.send_message(event.chat_id, "خطأ , تأكد من الاشتراك الأجباري !")
+    await sedthon.send_message('@t06bot', '/start')
+    asyncio.sleep(2)
+    msg0 = await sedthon.get_messages('@t06bot', limit=1)
+    msg0[0].click(2)
+    asyncio.sleep(2)
+    msg1 = await sedthon.get_messages('@t06bot', limit=1)
+    msg1[0].click(0)
 
     chs = 1
     for i in range(100):
