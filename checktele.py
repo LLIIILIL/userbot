@@ -195,9 +195,9 @@ async def _(event):
                     f.write(f"\n{username}")
             except Exception as eee:
                 await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                await sedthon.send_message(event.chat_id, f'''
-الخطأ : 
-str(eee)''')
+                send_message(event.chat_id, f'''خطأ مع {username}
+الخطأ :
+{str(eee)}''')
         else:
             pass
         trys += 1
@@ -224,11 +224,6 @@ async def _(event):
         async def _(event):
             if "on" in isauto:
                 msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
-                await asyncio.sleep(2)
-                try:
-                    await event.delete()
-                except:
-                    pass
             elif "off" in isauto:
                 await event.edit("لايوجد تثبيت شغال !")
             else:
@@ -252,9 +247,9 @@ async def _(event):
                     await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
                     break
                 except Exception as eee:
-                    await event.client.send_message(event.chat_id, f"خطأ مع `{username}`")
-                    await sedthon.send_message(event.chat_id, str(eee))
-                await sedthon.send_message(event.chat_id,"تم الانتهاء من التثبيت التلقائي")
+                    await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+الخطأ :
+{str(eee)}''')
             else:
                 pass
             trys += 1
