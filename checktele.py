@@ -185,7 +185,7 @@ async def _(event):
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
-                await event.client.send_message(event.chat_id, f'''
+                await event.client.send.message(event.chat_id, f'''
 تم صيد (@{username}) !
 سـيـدثـون : @Sedthon
 ''')
@@ -194,10 +194,10 @@ async def _(event):
                 with open("banned.txt", "a") as f:
                     f.write(f"\n{username}")
             except Exception as eee:
-                await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+                await sedthon.send.message(event.chat_id, f'''خطأ مع {username}
 الخطأ :
 {str(eee)}''')
-                await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
+                await sedthon.send.message(event.chat.id, "سأستمر بلفحص !")
         else:
             pass
         trys += 1
@@ -205,7 +205,7 @@ async def _(event):
     isclaim.clear()
     isclaim.append("off")
     trys = ""
-    await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
+    await event.client.send.message(event.chat_id, "تم الانتهاء من الفحص")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
@@ -238,19 +238,19 @@ async def _(event):
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
                         channel=ch, username=username))
-                    await event.client.send_message(event.chat_id, f'''
+                    await event.client.send.message(event.chat_id, f'''
 تم صيد (@{username}) !
 سـيـدثـون : @Sedthon
 ''')
                     break
                 except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                    await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
+                    await event.client.send.message(event.chat_id, f"مبند `{username}` ❌❌")
                     break
                 except Exception as eee:
                     if "already used" in str(eee):
                         pass
                     else:
-                        await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+                        await sedthon.send.message(event.chat_id, f'''خطأ مع {username}
 الخطأ :
 {str(eee)}''')
             else:
@@ -261,7 +261,7 @@ async def _(event):
         trys = ""
         isclaim.clear()
         isclaim.append("off")
-        await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
+        await sedthon.send.message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
     if msg[0] == "يدوي":  # تثبيت يدوي يوزر قناة
         await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` !")
         msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
@@ -270,13 +270,13 @@ async def _(event):
         try:
             await sedthon(functions.channels.UpdateUsernameRequest(
                 channel=ch, username=username))
-            await event.client.send_message(event.chat_id, f'''
+            await event.client.send.message(event.chat_id, f'''
 تم صيد (@{username}) !
 سـيـدثـون : @Sedthon
 ''')
         except telethon.errors.rpcerrorlist.UsernameInvalidError:
-            await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
+            await event.client.send.message(event.chat_id, f"مبند `{username}` ❌❌")
         except Exception as eee:
-            await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+            await sedthon.send.message(event.chat_id, f'''خطأ مع {username}
 الخطأ :
 {str(eee)}''')
