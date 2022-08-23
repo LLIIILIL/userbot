@@ -47,6 +47,8 @@ DEL_TIME_OUT = 10
 normzltext = "1234567890"
 namerzfont = normzltext
 name = "Profile Photos"
+time_name = []
+time_bio = []
 
 
 async def join_channel():
@@ -190,32 +192,46 @@ async def _(event):
     await event.edit(output_str)
 
 
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء الاسم الوقتي"))
+async def _(event):
+    time_name.clear()
+    time_name.append("off")
+
+
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اسم وقتي"))
 async def _(event):
+    time_name.clear()
+    time_name.append("on")
     await event.edit("تم انشاء اسم وقتي")
     if event.fwd_from:
         return
     while True:
-        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء الاسم الوقتي"))
-        async def _(event):
+        if time_name[0] == "off":
             break
-        HM = time.strftime("%H:%M")
-        for normal in HM:
-            if normal in normzltext:
-                namefont = namerzfont[normzltext.index(normal)]
-                HM = HM.replace(normal, namefont)
-        name = f"{HM}"
-        LOGS.info(name)
-        try:
-            await sedthon(
-                functions.account.UpdateProfileRequest(
-                    first_name=name
+        else:
+            HM = time.strftime("%H:%M")
+            for normal in HM:
+                if normal in normzltext:
+                    namefont = namerzfont[normzltext.index(normal)]
+                    HM = HM.replace(normal, namefont)
+            name = f"{HM}"
+            LOGS.info(name)
+            try:
+                await sedthon(
+                    functions.account.UpdateProfileRequest(
+                        first_name=name
+                    )
                 )
-            )
-        except FloodWaitError as ex:
-            LOGS.warning(str(ex))
-            await asyncio.sleep(ex.seconds)
-        await asyncio.sleep(DEL_TIME_OUT)
+            except FloodWaitError as ex:
+                LOGS.warning(str(ex))
+                await asyncio.sleep(ex.seconds)
+            await asyncio.sleep(DEL_TIME_OUT)
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء البايو الوقتي"))
+async def _(event):
+    time_bio.clear()
+    time_bio.append("off")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو وقتي"))
@@ -224,26 +240,26 @@ async def _(event):
     if event.fwd_from:
         return
     while True:
-        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء البايو الوقتي"))
-        async def _(event):
+        if time_name[0] == "off":
             break
-        HM = time.strftime("%l:%M")
-        for normal in HM:
-            if normal in normzltext:
-                namefont = namerzfont[normzltext.index(normal)]
-                HM = HM.replace(normal, namefont)
-        bio = HM
-        LOGS.info(bio)
-        try:
-            await sedthon(
-                functions.account.UpdateProfileRequest(
-                    about=bio
+        else:
+            HM = time.strftime("%l:%M")
+            for normal in HM:
+                if normal in normzltext:
+                    namefont = namerzfont[normzltext.index(normal)]
+                    HM = HM.replace(normal, namefont)
+            bio = HM
+            LOGS.info(bio)
+            try:
+                await sedthon(
+                    functions.account.UpdateProfileRequest(
+                        about=bio
+                    )
                 )
-            )
-        except FloodWaitError as ex:
-            LOGS.warning(str(ex))
-            await asyncio.sleep(ex.seconds)
-        await asyncio.sleep(DEL_TIME_OUT)
+            except FloodWaitError as ex:
+                LOGS.warning(str(ex))
+                await asyncio.sleep(ex.seconds)
+            await asyncio.sleep(DEL_TIME_OUT)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.غادر"))
