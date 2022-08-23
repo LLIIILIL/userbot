@@ -8,7 +8,6 @@ from telethon import events
 from help import *
 c = requests.session()
 bot_username = '@t06bot'
-channel_entity = sedthon.get_entity(bot_username)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بوت المليار"))
@@ -18,6 +17,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تجميع المليار"))
 async def _(event):
+    channel_entity = await sedthon.get_entity(bot_username)
     try:
         await sedthon.send_message('@t06bot', '/start')
         asyncio.sleep(2)
