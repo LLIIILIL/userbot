@@ -38,7 +38,7 @@ async def _(event):
         if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
             await sedthon.send_message(event.chat_id, f"مافي قنوات بلبوت")
             break
-        url = await msgs.reply_markup.rows[0].buttons[0].url
+        url = msgs.reply_markup.rows[0].buttons[0].url
         try:
             try:
                 await sedthon(JoinChannelRequest(url))
