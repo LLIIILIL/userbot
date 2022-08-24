@@ -197,10 +197,10 @@ async def _(event):
                 await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
 الخطأ :
 {str(eee)}''')
-                    if "A wait of" in str(eee):
+                if "A wait of" in str(eee):
                         break
-                    else:
-                        await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
+                else:
+                    await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
         else:
             pass
         trys += 1
