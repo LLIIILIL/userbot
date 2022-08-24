@@ -175,11 +175,15 @@ async def _(event):
                 f = [c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
+        if choice == "8":
+            username = "".join(random.choices(a,k=8))
+        print(username)
         t = Thread(target=lambda q, arg1: q.put(
             check_user(arg1)), args=(que, username))
         t.start()
         t.join()
         isav = que.get()
+        print(isav)
         if "Available" in isav:
             await asyncio.sleep(0.5)
             try:
