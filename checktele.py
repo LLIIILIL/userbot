@@ -146,7 +146,7 @@ async def _(event):
             if username in banned[0]:
                 c = d = random.choices(a)
                 d = random.choices(b)
-                f = [c[0], d[0], c[0], c[0], d[0]]
+                f = [c[0], d[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
             else:
@@ -175,28 +175,29 @@ async def _(event):
                 f = [c[0], c[0], c[0], c[0], d[0]]
                 random.shuffle(f)
                 username = ''.join(f)
-        t = Thread(target=lambda q, arg1: q.put(
-            check_user(arg1)), args=(que, username))
-        t.start()
-        t.join()
-        isav = que.get()
-        if "Available" in isav:
-            await asyncio.sleep(0.5)
-            try:
-                await sedthon(functions.channels.UpdateUsernameRequest(
-                    channel=ch, username=username))
-                await event.client.send_message(event.chat_id, f'''
-تم صيد (@{username}) !
-سـيـدثـون : @Sedthon
-''')
-                break
-            except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                with open("banned.txt", "a") as f:
-                    f.write(f"\n{username}")
-            except Exception as eee:
-                await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
-الخطأ :
-{str(eee)}''')
+        for i in range(25):
+            t = Thread(target=lambda q, arg1: q.put(
+                check_user(arg1)), args=(que, username))
+            t.start()
+            t.join()
+            isav = que.get()
+            if "Available" in isav:
+                await asyncio.sleep(0.5)
+                try:
+                    await sedthon(functions.channels.UpdateUsernameRequest(
+                        channel=ch, username=username))
+                    await event.client.send_message(event.chat_id, f'''
+                    تم صيد (@{username}) !
+                    سـيـدثـون : @Sedthon
+                    ''')
+                    break
+                except telethon.errors.rpcerrorlist.UsernameInvalidError:
+                    with open("banned.txt", "a") as f:
+                        f.write(f"\n{username}")
+                except Exception as eee:
+                    await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+                    الخطأ :
+                    {str(eee)}''')
                 if "A wait of" in str(eee):
                     break
                 else:
