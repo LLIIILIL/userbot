@@ -20,17 +20,17 @@ async def _(event):
     await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
     channel_entity = await sedthon.get_entity(bot_username)
     await sedthon.send_message('@t06bot', '/start')
-    asyncio.sleep(10)
+    await asyncio.sleep(2)
     msg0 = await sedthon.get_messages('@t06bot', limit=1)
-    print(msg0)
+
     await msg0[0].click(2)
-    asyncio.sleep(10)
+    await asyncio.sleep(2)
     msg1 = await sedthon.get_messages('@t06bot', limit=1)
     await msg1[0].click(0)
 
     chs = 1
     for i in range(100):
-        await asyncio.sleep(10)
+        await asyncio.sleep(2)
 
         list = await sedthon(GetHistoryRequest(peer=channel_entity, limit=1,
                                                offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
