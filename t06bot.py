@@ -32,12 +32,12 @@ async def _(event):
         await asyncio.sleep(2)
 
         list = await sedthon(GetHistoryRequest(peer=channel_entity, limit=1,
-                                         offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
+                                               offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
         msgs = list.messages[0]
         if msgs.message.find('لا يوجد قنوات في الوقت الحالي , قم يتجميع النقاط بطريقه مختلفه') != -1:
             await sedthon.send_message(event.chat_id, f"مافي قنوات بلبوت")
             break
-        url = msgs.reply_markup.rows[0].buttons[0].url
+        url = await msgs.reply_markup.rows[0].buttons[0].url
         try:
             try:
                 await sedthon(JoinChannelRequest(url))
