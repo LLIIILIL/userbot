@@ -260,7 +260,7 @@ async def _(event):
                 pass
             trys += 1
 
-            await asyncio.sleep(15)
+            await asyncio.sleep(8)
         trys = ""
         isclaim.clear()
         isclaim.append("off")
