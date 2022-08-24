@@ -48,8 +48,8 @@ DEL_TIME_OUT = 10
 normzltext = "1234567890"
 namerzfont = normzltext
 name = "Profile Photos"
-time_name = []
-time_bio = []
+time_name = ["on"]
+time_bio = ["off"]
 
 
 async def join_channel():
