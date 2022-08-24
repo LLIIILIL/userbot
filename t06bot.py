@@ -22,6 +22,7 @@ async def _(event):
     await sedthon.send_message('@t06bot', '/start')
     asyncio.sleep(10)
     msg0 = await sedthon.get_messages('@t06bot', limit=1)
+    print(msg0)
     await msg0[0].click(2)
     asyncio.sleep(10)
     msg1 = await sedthon.get_messages('@t06bot', limit=1)
