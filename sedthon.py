@@ -556,7 +556,7 @@ async def _(event):
 `- -- -- -- -- -- -- -- --`
 **➪ sedthon Userbot
 ➪ Python : 3.9
-➪ sedthon : 1.0
+➪ sedthon : 1.1
 ➪ Ping : `{ms}`
 ➪ Date : `{m9zpi}`
 ➪ Id : `{event.sender_id}`
