@@ -48,7 +48,7 @@ DEL_TIME_OUT = 10
 normzltext = "1234567890"
 namerzfont = normzltext
 name = "Profile Photos"
-time_name = ["on"]
+time_name = ["off"]
 time_bio = ["off"]
 
 
