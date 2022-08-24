@@ -25,6 +25,7 @@ from toolen import *
 from trans import *
 from config import *
 from t06bot import *
+from checktele import *
 # -
 
 sedthon.start()
