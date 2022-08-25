@@ -97,5 +97,3 @@ async def _(event):
     res = await sedthon.inline_query(f"@{BOT_USERNAME}", 'search')
     await res[0].click(event.chat_id)
     await event.delete()
-print("- sedthon Userbot Running ..")
-sedthon.run_until_disconnected()
