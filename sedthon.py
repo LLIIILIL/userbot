@@ -68,17 +68,9 @@ async def _(event):
             pass
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو"))
-async def _(event):
-    user = (await event.get_sender()).id
-    r = await sedthon(functions.users.GetFullUserRequest(id=user))
-    r = r.about
-    await event.edit(f"`{r}`")
-
-
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اكس او"))
 async def _(event):
-    bot = 'xobot'
+    bot = 'inlinegamesbot'
     xo = await sedthon.inline_query(bot, "")
     await xo[0].click(
         event.chat_id,
@@ -192,6 +184,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء الاسم الوقتي"))
 async def _(event):
+    await event.edit("تم انهاء الاسم الوقتي")
     time_name.clear()
     time_name.append("off")
     await sedthon(
@@ -233,6 +226,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.انهاء البايو الوقتي"))
 async def _(event):
+    await event.edit("تم انهاء البايو الوقتي")
     time_bio.clear()
     time_bio.append("off")
     await sedthon(
@@ -242,32 +236,39 @@ async def _(event):
     )
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو وقتي"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو (.*)"))
 async def _(event):
-    await event.delete()
-    if event.fwd_from:
-        return
-    while True:
-        if time_name[0] == "off":
-            break
-        else:
-            HM = time.strftime("%l:%M")
-            for normal in HM:
-                if normal in normzltext:
-                    namefont = namerzfont[normzltext.index(normal)]
-                    HM = HM.replace(normal, namefont)
-            bio = HM
-            LOGS.info(bio)
-            try:
-                await sedthon(
-                    functions.account.UpdateProfileRequest(
-                        about=bio
+    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
+    if "وقتي" in msg:
+        await event.delete()
+        if event.fwd_from:
+            return
+        while True:
+            if time_name[0] == "off":
+                break
+            else:
+                HM = time.strftime("%l:%M")
+                for normal in HM:
+                    if normal in normzltext:
+                        namefont = namerzfont[normzltext.index(normal)]
+                        HM = HM.replace(normal, namefont)
+                bio = HM
+                LOGS.info(bio)
+                try:
+                    await sedthon(
+                        functions.account.UpdateProfileRequest(
+                            about=bio
+                        )
                     )
-                )
-            except FloodWaitError as ex:
-                LOGS.warning(str(ex))
-                await asyncio.sleep(ex.seconds)
-            await asyncio.sleep(DEL_TIME_OUT)
+                except FloodWaitError as ex:
+                    LOGS.warning(str(ex))
+                    await asyncio.sleep(ex.seconds)
+                await asyncio.sleep(DEL_TIME_OUT)
+    else:
+        user = (await event.get_sender()).id
+        r = await sedthon(functions.users.GetFullUserRequest(id=user))
+        r = r.about
+        await event.edit(f"`{r}`")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.غادر"))
