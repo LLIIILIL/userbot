@@ -44,9 +44,9 @@ async def _(event):
     if j == user_id[0]:
         data = event.data
         if data == b'F1':
-            await sedthon.send_message(event.chat_id, "انتضر...")
+            # await sedthon.send_message(event.chat_id, "انتضر...")
             file = downloader(url[0])
-            await event.delete()
+            # await event.delete()
             await sedthon.send_file(event.chat_id, file)
             os.remove(file)
         if data == b'F2':
