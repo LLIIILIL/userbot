@@ -1,11 +1,8 @@
-import asyncio
-from winreg import QueryInfoKey
 from telethon import Button, events
 import os
 from pytube import YouTube
 from youtube_search import YoutubeSearch
 import json
-from time import sleep
 from config import *
 sedthon.start()
 
