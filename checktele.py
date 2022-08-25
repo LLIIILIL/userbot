@@ -133,15 +133,13 @@ def gen_user(choice):
         f = [c[0], c[0], c[0], c[0], d[0], c[0], c[0]]
         random.shuffle(f)
         username = ''.join(f)
-        username = ''.join(random.choices(a, k=8))
         if username in banned[0]:
             c = d = random.choices(a)
             d = random.choices(b)
             f = [c[0], c[0], c[0], c[0], d[0]]
             random.shuffle(f)
             username = ''.join(f)
-    if choice == '8':
-        username = ''.join(random.choices(a, k=8))
+
     return username
 
 
