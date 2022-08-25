@@ -2,17 +2,13 @@ from telethon.errors.rpcerrorlist import YouBlockedUserError
 from telethon.tl import functions
 from hijri_converter import Gregorian
 from telethon.tl import functions
-from telethon.tl.types import (
-    ChannelParticipantsAdmins
-)
-
 from telethon.tl.functions.channels import LeaveChannelRequest
 from collections import deque
 from telethon import events
 from telethon.errors import FloodWaitError
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest as Get
-from telethon.tl import functions, types
+from telethon.tl import functions
 import time
 import asyncio
 import logging
@@ -26,6 +22,7 @@ from trans import *
 from config import *
 from t06bot import *
 from checktele import *
+from yt import *
 # -
 
 sedthon.start()
@@ -197,6 +194,11 @@ async def _(event):
 async def _(event):
     time_name.clear()
     time_name.append("off")
+    await sedthon(
+        functions.account.UpdateProfileRequest(
+            first_name="@Sedthon"
+        )
+    )
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اسم وقتي"))
@@ -233,6 +235,11 @@ async def _(event):
 async def _(event):
     time_bio.clear()
     time_bio.append("off")
+    await sedthon(
+        functions.account.UpdateProfileRequest(
+            about="@Sedthon"
+        )
+    )
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو وقتي"))
