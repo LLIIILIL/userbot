@@ -19,13 +19,11 @@ def downloader(url):
 
 title = []
 url = []
-
 user_id = []
 
 
 @bot.on(events.InlineQuery)
 async def _(query):
-
     user_id.append(query.original_update.user_id)
     keyboard = [
         [Button.inline(title[0], data="F1")],
@@ -44,33 +42,23 @@ async def _(event):
     if j == user_id[0]:
         data = event.data
         if data == b'F1':
-            # await sedthon.send_message(event.chat_id, "انتضر...")
             file = downloader(url[0])
-            # await event.delete()
             await sedthon.send_file(event.chat_id, file)
             os.remove(file)
         if data == b'F2':
-            await sedthon.send_message(event.chat_id, "انتضر...")
             file = downloader(url[1])
-            await event.delete()
             await sedthon.send_file(event.chat_id, file)
             os.remove(file)
         if data == b'F3':
-            await sedthon.send_message(event.chat_id, "انتضر...")
             file = downloader(url[2])
-            await event.delete()
             await sedthon.send_file(event.chat_id, file)
             os.remove(file)
         if data == b'F4':
-            await sedthon.send_message(event.chat_id, "انتضر...")
             file = downloader(url[3])
-            await event.delete()
             await sedthon.send_file(event.chat_id, file)
             os.remove(file)
         if data == b'F5':
-            await sedthon.send_message(event.chat_id, "انتضر...")
             file = downloader(url[4])
-            await event.delete()
             await sedthon.send_file(event.chat_id, file)
             os.remove(file)
     else:
@@ -87,7 +75,7 @@ async def _(event):
     results_dict = json.loads(results)
     title.clear()
     url.clear()
-    user_id.clear
+    user_id.clear()
     for v in results_dict['videos']:
         title.append(str(v['title']))
         url.append(f'https://www.youtube.com' + v['url_suffix'])
