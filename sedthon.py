@@ -450,10 +450,11 @@ async def spam_function2(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=Fa
 async def spam_function3(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
     hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
     counter = int(cat[0])
-    if len(cat) == 2:
+    if len(cat) == 1:
         spam_message = "زرف"
         for _ in range(counter):
             if event.reply_to_msg_id:
+                await sandy.reply(spam_message)
                 await sandy.reply(spam_message)
             else:
                 await event.client.send_message(event.chat.id, spam_message)
