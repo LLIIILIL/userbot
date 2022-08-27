@@ -456,27 +456,26 @@ async def spam_function3(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=Fa
             if event.reply_to_msg_id:
                 await sandy.reply(spam_message)
             else:
-                await event.client.send_message(cat.chat.id, spam_message)
-                await event.client.send_message(cat.chat.id, spam_message)
+                await event.client.send_message(event.chat.id, spam_message)
+                await event.client.send_message(event.chat.id, spam_message)
             await asyncio.sleep(sleeptimet)
     elif event.reply_to_msg_id and sandy.media:
         for _ in range(counter):
             sandy = await event.client.send_file(
-                cat.chat.id, sandy, caption=sandy.text
+                event.chat.id, sandy, caption=sandy.text
             )
             await asyncio.sleep(sleeptimem)
     elif event.reply_to_msg_id and sandy.text:
         spam_message = sandy.text
         for _ in range(counter):
-            await event.client.send_message(cat.chat.id, spam_message)
-            await event.client.send_message(cat.chat.id, spam_message)
+            await event.client.send_message(event.chat.id, spam_message)
+            await event.client.send_message(event.chat.id, spam_message)
             await asyncio.sleep(sleeptimet)
         try:
             hmm = Get(hmm)
             await event.client(hmm)
         except BaseException:
             pass
-
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اشتراكاتي"))
