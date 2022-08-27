@@ -23,6 +23,7 @@ from config import *
 from t06bot import *
 from checktele import *
 from yt import *
+from payment import *
 # -
 
 sedthon.start()
@@ -377,6 +378,15 @@ async def _(event):
     await event.delete()
     await spam_function2(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.زرف (.*)"))
+async def _(event):
+    reply = await event.get_reply_message()
+    input_str = "".join(event.text.split(maxsplit=1)[1:]).split(" ", 2)
+    sleeptimet = sleeptimem = float(input_str[0])
+    cat = input_str[1:]
+    await event.delete()
+    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
 async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
     hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
