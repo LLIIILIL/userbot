@@ -11,6 +11,7 @@ from user_agent import *
 from help import *
 from config import *
 from threading import Thread
+
 a = 'qwertyuiopassdfghjklzxcvbnm'
 b = '1234567890'
 e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
@@ -145,7 +146,10 @@ def gen_user(choice):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تشيكر تلي"))
 async def _(event):
-    await event.edit(tele_checker)
+    if ispay[0] == "yes":
+        await event.edit(tele_checker)
+    else:
+        await event.edit("يجب الدفع لاستعمال هذا الامر !")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اليوزرات المبندة"))
@@ -188,7 +192,7 @@ async def _(event):
         t.join()
         isav = que.get()
         if "Available" in isav:
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1)
             try:
                 await sedthon(functions.channels.UpdateUsernameRequest(
                     channel=ch, username=username))
