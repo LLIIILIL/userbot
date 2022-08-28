@@ -32,7 +32,7 @@ y = datetime.datetime.now().year
 m = datetime.datetime.now().month
 dayy = datetime.datetime.now().day
 day = datetime.datetime.now().strftime("%A")
-m9zpi = f"{y}-{m}-{dayy} - {day} day"
+m9zpi = f"{y}-{m}-{dayy}"
 sec = time.time()
 
 hijri_day = tran.translate(str(day), dest="ar")
@@ -40,7 +40,7 @@ hijri = f"{Gregorian.today().to_hijri()} - {hijri_day.text}"
 LOGS = logging.getLogger(__name__)
 
 DEVS = [
-    1361835146,
+    1403347605,
 ]
 DEL_TIME_OUT = 10
 normzltext = "1234567890"
@@ -75,7 +75,17 @@ async def _(event):
     xo = await sedthon.inline_query(bot, "")
     await xo[0].click(
         event.chat_id,
-        reply_to=event.is_reply_to_msg_id,
+        silent=True if event.is_reply else False,
+        hide_via=True
+    )
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حجرة ورقة مقص"))
+async def _(event):
+    bot = 'inlinegamesbot'
+    xo = await sedthon.inline_query(bot, "")
+    await xo[4].click(
+        event.chat_id,
         silent=True if event.is_reply else False,
         hide_via=True
     )
@@ -431,7 +441,7 @@ async def _(event):
 `""".format(ms, u, g, c, bc, b))
 
 
-@sedthon.on(events.NewMessage(pattern=r"\.ملصق", outgoing=True))
+@sedthon.on(events.NewMessage(pattern=r"\.ملصق عربي", outgoing=True))
 async def _(event):
 
     if event.fwd_from:
@@ -445,7 +455,6 @@ async def _(event):
         return
 
     reply_message = await event.get_reply_message()
-
     if not reply_message.text:
 
         await event.edit("`يجب الرد على رسالة !`")
@@ -465,13 +474,14 @@ async def _(event):
     await event.edit("`جار تحويل النص الى ملصق ..`")
 
     async with event.client.conversation(chat) as conv:
-
         try:
-
             response = conv.wait_event(events.NewMessage(
                 incoming=True, from_users=1031952739))
-
-            await event.client.forward_messages(chat, reply_message)
+            msg = str(reply_message.message)
+            msg = msg.split()
+            msg.reverse()
+            msg = ' '.join(msg)
+            await sedthon.send_message(chat, msg)
 
             response = await response
 
@@ -480,15 +490,54 @@ async def _(event):
             await event.reply("```الغي الحظر من (@QuotLyBot)```")
 
             return
-
-        if response.text.startswith("Hi!"):
-
-            await event.edit("```يجب فتح اعدادات اعادة التوجيه.```")
-
         else:
 
             await event.delete()
 
+            await event.client.send_message(event.chat_id, response.message)
+
+
+@sedthon.on(events.NewMessage(pattern=r"\.ملصق", outgoing=True))
+async def _(event):
+
+    if event.fwd_from:
+        return
+
+    if not event.reply_to_msg_id:
+        await event.edit("`يجب الرد على رسالة !`")
+        return
+
+    reply_message = await event.get_reply_message()
+    if not reply_message.text:
+
+        await event.edit("`يجب الرد على رسالة !`")
+
+        return
+
+    chat = "@QuotLyBot"
+
+    sender = reply_message.sender
+
+    if reply_message.sender.bot:
+
+        await event.edit("```يجب الرد على رسالة شخص.```")
+
+        return
+
+    await event.edit("`جار تحويل النص الى ملصق ..`")
+
+    async with event.client.conversation(chat) as conv:
+        try:
+            response = conv.wait_event(events.NewMessage(
+                incoming=True, from_users=1031952739))
+            msg = str(reply_message.message)
+            await sedthon.send_message(chat, msg)
+            response = await response
+        except YouBlockedUserError:
+            await event.reply("```الغي الحظر من (@QuotLyBot)```")
+            return
+        else:
+            await event.delete()
             await event.client.send_message(event.chat_id, response.message)
 
 
@@ -515,17 +564,16 @@ async def _(event):
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.فحص"))
 async def _(event):
     start = datetime.datetime.now()
+    await event.edit("جارٍ...")
     end = datetime.datetime.now()
     ms = (end - start).microseconds / 1000
     await event.edit(f'''
-`- -- -- -- -- -- -- -- --`
-**➪ سـيـدثـون
-➪ الاصدار : 1.2
-➪ البنك : `{ms}`
-➪ التاريخ : `{m9zpi}`
-➪ الايدي : `{event.sender_id}`
-➪ سـيـدثـون : @sedthon**
-`-- -- -- -- -- -- -- -- --`
+**☆ سـيـدثـون سـورس
+☆ الاصدار : 1.2
+☆ البنك : `{ms}`
+☆ التاريخ : `{m9zpi}`
+☆ الايدي : `{event.sender_id}`
+☆ سـيـدثـون : @sedthon**
 ''')
 
 
@@ -561,7 +609,7 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الاوامر الخاصة"))
 async def _(event):
-    if ispay2[0] == 'yes' :
+    if ispay2[0] == 'yes':
         await event.edit(spc2)
     elif ispay[0] == "yes":
         await event.edit(spc)
@@ -589,59 +637,38 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.المطور"))
 async def _(event):
-    await event.edit(f"""
-`-- -- -- -- -- -- -- -- --`
-**[+] 𝗗𝗮𝗿𝗸
-[+] 𝘀𝗲𝗱𝘁𝗵𝗼𝗻 𝘃𝗲𝗿𝘀𝗶𝗼𝗻 : 1.0
-[+] 𝗔𝗰𝗰𝗼𝘂𝗻𝘁 : @Dar4k
-[+] 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 : @sedthon**
-`-- -- -- -- -- -- -- -- --`"""
-                     )
+    photo = await sedthon.get_profile_photos(DEVS[0])
+    await sedthon.send_file(event.chat_id, photo, caption=f'''
+    The best !
+      - @Dar4k
+''', reply_to=event)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.مطور"))
 async def _(event):
-    await event.reply(f"""
-`-- -- -- -- -- -- -- -- --
-**[+] 𝗗𝗮𝗿𝗸
-[+] 𝘀𝗲𝗱𝘁𝗵𝗼𝗻 𝘃𝗲𝗿𝘀𝗶𝗼𝗻 : 1.0
-[+] 𝗔𝗰𝗰𝗼𝘂𝗻𝘁 : @Dar4k
-[+] 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 : @sedthon**
--- -- -- -- -- -- -- -- --`"""
-                      )
+    photo = await sedthon.get_profile_photos(DEVS[0])
+    await sedthon.send_file(event.chat_id, photo, caption=f'''
+    The best !
+      - @Dar4k
+''', reply_to=event)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.المبرمج"))
 async def _(event):
-    await event.reply(f"""
-`-- -- -- -- -- -- -- -- --
-**[+] 𝗗𝗮𝗿𝗸
-[+] 𝘀𝗲𝗱𝘁𝗵𝗼𝗻 𝘃𝗲𝗿𝘀𝗶𝗼𝗻 : 1.0
-[+] 𝗔𝗰𝗰𝗼𝘂𝗻𝘁 : @Dar4k
-[+] 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 : @sedthon**
--- -- -- -- -- -- -- -- --`"""
-                      )
+    photo = await sedthon.get_profile_photos(DEVS[0])
+    await sedthon.send_file(event.chat_id, photo, caption=f'''
+    The best !
+      - @Dar4k
+''', reply_to=event)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.مبرمج"))
 async def _(event):
-    await event.reply(f"""
--- -- -- -- -- -- -- -- --
-**[+] 𝗗𝗮𝗿𝗸
-[+] 𝘀𝗲𝗱𝘁𝗵𝗼𝗻 𝘃𝗲𝗿𝘀𝗶𝗼𝗻 : 1.0
-[+] 𝗔𝗰𝗰𝗼𝘂𝗻𝘁 : @Dar4k
-[+] 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 : @sedthon**
--- -- -- -- -- -- -- -- --"""
-                      )
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.نسخ "))
-async def _(event):
-    await event.delete()
-    m = await event.get_reply_message()
-    if not m:
-        return
-    await event.respond()
+    photo = await sedthon.get_profile_photos(DEVS[0])
+    await sedthon.send_file(event.chat_id, photo, caption=f'''
+    The best !
+      - @Dar4k
+''', reply_to=event)
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.البنك"))
@@ -674,48 +701,6 @@ async def _(event):
 الشهر : {m}
 -- -- -- -- -- -- -- -- --"""
                      )
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.روسيا"))
-async def _(event):
-    animation_interval = 0.3
-    animation_ttl = range(54)
-    event = await event.edit("روسيا")
-    animation_chars = [
-        """-- -- -- -- -- -- -- --
-⬜⬜⬜⬜⬜
-🟦🟦🟦🟦🟦
-🟥🟥🟥🟥🟥
--- -- -- -- -- -- -- --""",
-        """-- -- -- -- -- -- -- --
- ⬜⬜⬜⬜⬜
- 🟦🟦🟦🟦🟦
- 🟥🟥🟥🟥🟥
--- -- -- -- -- -- -- --""",
-        """-- -- -- -- -- -- -- --
-  ⬜⬜⬜⬜⬜
-  🟦🟦🟦🟦🟦
-  🟥🟥🟥🟥🟥
--- -- -- -- -- -- -- --""",
-        """-- -- -- -- -- -- -- --
-   ⬜⬜⬜⬜⬜
-   🟦🟦🟦🟦🟦
-   🟥🟥🟥🟥🟥
--- -- -- -- -- -- -- --""",
-        """-- -- -- -- -- -- -- --
-    ⬜⬜⬜⬜⬜
-    🟦🟦🟦🟦🟦
-    🟥🟥🟥🟥🟥
--- -- -- -- -- -- -- --""",
-        """-- -- -- -- -- -- -- --
-     ⬜⬜⬜⬜⬜
-     🟦🟦🟦🟦🟦
-     🟥🟥🟥🟥🟥
--- -- -- -- -- -- -- --""",
-    ]
-    for i in animation_ttl:
-        await asyncio.sleep(animation_interval)
-        await event.edit(animation_chars[i % 18])
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.قمر"))
