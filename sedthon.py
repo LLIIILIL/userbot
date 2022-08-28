@@ -644,21 +644,15 @@ async def _(event):
     await event.respond()
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بنك"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.البنك"))
 async def _(event):
-    catevent = await event.edit(event, "`!....`")
-    await asyncio.sleep(0.3)
-    await event.edit(catevent, "`..!..`")
-    await asyncio.sleep(0.3)
-    await event.edit(catevent, "`....!`")
     start = datetime.now()
     end = datetime.now()
-    tms = (end - start).microseconds / 1000
-    ms = round((tms - 0.6) / 3, 3)
+    res = (end - start).microseconds / 1000
     await event.edit(f"""
 `-- -- -- -- -- -- -- -- -- --`
 - تمت الاستجابة
-- البنك : `{ms}`
+- البنك : `{res}`
 `-- -- -- -- -- -- -- -- -- --`"""
                      )
 
