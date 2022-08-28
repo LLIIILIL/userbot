@@ -17,6 +17,8 @@ async def _(event):
 async def _(event):
     if ispay[0] == "yes":
         for i in range(int("".join(event.text.split(maxsplit=2)[2:]).split(" ", 2)[0])):
+            if ispay[0] == 'no':
+                break
             chat = event.chat_id
             await sedthon.send_message(chat, 'كلمات')
             await asyncio.sleep(0.5)
@@ -39,6 +41,8 @@ async def _(event):
 async def _(event):
     if ispay[0] == "yes":
         for i in range(int("".join(event.text.split(maxsplit=2)[2:]).split(" ", 2)[0])):
+            if ispay[0] == 'no':
+                break
             chat = event.chat_id
             await sedthon.send_message(chat, 'فلوسي')
             await asyncio.sleep(0.5)
