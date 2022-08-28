@@ -245,39 +245,41 @@ async def _(event):
     )
 
 
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو (.*)"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو وقتي"))
 async def _(event):
-    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
-    if "وقتي" in msg:
-        await event.delete()
-        if event.fwd_from:
-            return
-        while True:
-            if time_name[0] == "off":
-                break
-            else:
-                HM = time.strftime("%l:%M")
-                for normal in HM:
-                    if normal in normzltext:
-                        namefont = namerzfont[normzltext.index(normal)]
-                        HM = HM.replace(normal, namefont)
-                bio = HM
-                LOGS.info(bio)
-                try:
-                    await sedthon(
-                        functions.account.UpdateProfileRequest(
-                            about=bio
-                        )
-                    )
-                except FloodWaitError as ex:
-                    LOGS.warning(str(ex))
-                    await asyncio.sleep(ex.seconds)
-                await asyncio.sleep(DEL_TIME_OUT)
-    else:
-        user = (await event.get_sender()).id
-        r = await sedthon(functions.users.GetFullUserRequest(id=user))
-        r = r.about
-        await event.edit(f"`{r}`")
+    await event.delete()
+    if event.fwd_from:
+        return
+    while True:
+        if time_name[0] == "off":
+            break
+        else:
+            HM = time.strftime("%l:%M")
+            for normal in HM:
+                if normal in normzltext:
+                    namefont = namerzfont[normzltext.index(normal)]
+                    HM = HM.replace(normal, namefont)
+            bio = HM
+            LOGS.info(bio)
+
+        try:
+            await sedthon(
+                functions.account.UpdateProfileRequest(
+                    about=bio
+                )
+            )
+        except FloodWaitError as ex:
+            LOGS.warning(str(ex))
+            await asyncio.sleep(ex.seconds)
+        await asyncio.sleep(DEL_TIME_OUT)
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.بايو"))
+async def _(event):
+    user = (await event.get_sender()).id
+    bio = await sedthon(functions.users.GetFullUserRequest(id=user))
+    bio = bio.about
+    await event.edit(f"`{bio}`")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.غادر"))
@@ -631,8 +633,35 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.ايدي"))
 async def _(event):
-    await event.edit(f"ايديك : `{event.sender_id}`")
-    print(event)
+    reply_message = await event.get_reply_message()
+    if reply_message is None:
+        try:
+            user = (await event.get_sender()).id
+            bio = await sedthon(functions.users.GetFullUserRequest(id=user))
+            bio = bio.about
+            photo = await sedthon.get_profile_photos(event.sender_id)
+            await sedthon.send_file(event.chat_id, photo, caption=f'''
+    جمال عيونك اشوف بيه جمال العالم كله !
+
+    ايديك : `{event.sender_id}`
+    البايو : `{bio}`
+        ''', reply_to=event)
+        except:
+            await sedthon.send_message(event.chat_id, f"ايديك : `{event.sender_id}`")
+    else:
+        id = reply_message.from_id.user_id
+        try:
+            bio = await sedthon(functions.users.GetFullUserRequest(id=id))
+            bio = bio.about
+            photo = await sedthon.get_profile_photos(id)
+            await sedthon.send_file(event.chat_id, photo, caption=f'''
+    يمحلاه هلحساب !
+
+    ايديه : `{id}`
+    البايو : `{bio}`
+        ''', reply_to=event)
+        except:
+            await sedthon.send_message(event.chat_id, f"ايديه : `{id}`")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.المطور"))
