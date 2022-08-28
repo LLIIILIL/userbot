@@ -154,143 +154,157 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اليوزرات المبندة"))
 async def _(event):
-    await sedthon.send_file(event.chat_id, 'banned.txt')
+    if ispay[0] == "yes":
+        await sedthon.send_file(event.chat_id, 'banned.txt')
+    else:
+        await event.edit("يجب الدفع لاستعمال هذا الامر !")
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الانواع"))
 async def _(event):
-    await event.edit(tele_checker2)
+    if ispay[0] == "yes":
+        await event.edit(tele_checker2)
+    else:
+        await event.edit("يجب الدفع لاستعمال هذا الامر !")
+
 
 # كلايم عدد نوع قناة
 
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.كلايم (.*)"))
 async def _(event):
-    isclaim.clear()
-    isclaim.append("on")
-    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
-    ch = str(msg[2])
-    choice = str(msg[1])
-    trys = 0
-    await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
+    if ispay[0] == "yes":
+        isclaim.clear()
+        isclaim.append("on")
+        msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 2)
+        ch = str(msg[2])
+        choice = str(msg[1])
+        trys = 0
+        await event.edit(f"حسناً سأفحص نوع `{choice}` من اليوزرات على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
 
-    @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
-    async def _(event):
-        if "on" in isclaim:
-            await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
-        elif "off" in isclaim:
-            await event.edit("لايوجد كلايم شغال !")
-        else:
-            await event.edit("خطأ")
-    for i in range(int(msg[0])):
-        username = ""
-
-        username = gen_user(choice)
-        t = Thread(target=lambda q, arg1: q.put(
-            check_user(arg1)), args=(que, username))
-        t.start()
-        t.join()
-        isav = que.get()
-        if "Available" in isav:
-            await asyncio.sleep(1)
-            try:
-                await sedthon(functions.channels.UpdateUsernameRequest(
-                    channel=ch, username=username))
-                await event.client.send_message(event.chat_id, f'''
-تم صيد (@{username}) !
-سـيـدثـون : @Sedthon
-''')
-                break
-            except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                with open("banned.txt", "a") as f:
-                    f.write(f"\n{username}")
-            except Exception as eee:
-                await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
-الخطأ :
-{str(eee)}''')
-                if "A wait of" in str(eee):
-                    break
-                else:
-                    await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
-        else:
-            pass
-        trys += 1
-
-    isclaim.clear()
-    isclaim.append("off")
-    trys = ""
-    await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
-
-
-@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
-async def _(event):
-    trys = 0
-    msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
-    if msg[0] == "تلقائي":  # تثبيت تلقائي عدد يوزر قناة
-        isauto.clear()
-        isauto.append("on")
-        msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
-        username = str(msg[2])
-        ch = str(msg[1])
-        await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
-
-        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة التثبيت التلقائي"))
+        @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة الكلايم"))
         async def _(event):
-            if "on" in isauto:
-                msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
-            elif "off" in isauto:
-                await event.edit("لايوجد تثبيت شغال !")
+            if "on" in isclaim:
+                await event.edit(f"الكلايم وصل لـ({trys}) من المحاولات")
+            elif "off" in isclaim:
+                await event.edit("لايوجد كلايم شغال !")
             else:
                 await event.edit("خطأ")
         for i in range(int(msg[0])):
+            username = ""
+
+            username = gen_user(choice)
             t = Thread(target=lambda q, arg1: q.put(
                 check_user(arg1)), args=(que, username))
             t.start()
             t.join()
             isav = que.get()
             if "Available" in isav:
+                await asyncio.sleep(1)
                 try:
                     await sedthon(functions.channels.UpdateUsernameRequest(
                         channel=ch, username=username))
                     await event.client.send_message(event.chat_id, f'''
-تم صيد (@{username}) !
-سـيـدثـون : @Sedthon
-''')
+    تم صيد (@{username}) !
+    سـيـدثـون : @Sedthon
+    ''')
                     break
                 except telethon.errors.rpcerrorlist.UsernameInvalidError:
-                    await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
-                    break
+                    with open("banned.txt", "a") as f:
+                        f.write(f"\n{username}")
                 except Exception as eee:
-
                     await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
-الخطأ :
-{str(eee)}''')
+    الخطأ :
+    {str(eee)}''')
                     if "A wait of" in str(eee):
                         break
+                    else:
+                        await sedthon.send_message(event.chat.id, "سأستمر بلفحص !")
             else:
                 pass
             trys += 1
 
-            await asyncio.sleep(8)
-        trys = ""
         isclaim.clear()
         isclaim.append("off")
-        await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
-    if msg[0] == "يدوي":  # تثبيت يدوي يوزر قناة
-        await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` !")
+        trys = ""
+        await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
+    else:
+        await event.edit("يجب الدفع لاستعمال هذا الامر !")
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.تثبيت (.*)"))
+async def _(event):
+    if ispay[0] == "yes":
+        trys = 0
         msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
-        username = str(msg[0])
-        ch = str(msg[1])
-        try:
-            await sedthon(functions.channels.UpdateUsernameRequest(
-                channel=ch, username=username))
-            await event.client.send_message(event.chat_id, f'''
-تم صيد (@{username}) !
-سـيـدثـون : @Sedthon
-''')
-        except telethon.errors.rpcerrorlist.UsernameInvalidError:
-            await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
-        except Exception as eee:
-            await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
-الخطأ :
-{str(eee)}''')
+        if msg[0] == "تلقائي":  # تثبيت تلقائي عدد يوزر قناة
+            isauto.clear()
+            isauto.append("on")
+            msg = ("".join(event.text.split(maxsplit=2)[2:])).split(" ", 2)
+            username = str(msg[2])
+            ch = str(msg[1])
+            await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` , بعدد `{msg[0]}` من المحاولات !")
+
+            @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.حالة التثبيت التلقائي"))
+            async def _(event):
+                if "on" in isauto:
+                    msg = await event.edit(f"التثبيت وصل لـ({trys}) من المحاولات")
+                elif "off" in isauto:
+                    await event.edit("لايوجد تثبيت شغال !")
+                else:
+                    await event.edit("خطأ")
+            for i in range(int(msg[0])):
+                t = Thread(target=lambda q, arg1: q.put(
+                    check_user(arg1)), args=(que, username))
+                t.start()
+                t.join()
+                isav = que.get()
+                if "Available" in isav:
+                    try:
+                        await sedthon(functions.channels.UpdateUsernameRequest(
+                            channel=ch, username=username))
+                        await event.client.send_message(event.chat_id, f'''
+    تم صيد (@{username}) !
+    سـيـدثـون : @Sedthon
+    ''')
+                        break
+                    except telethon.errors.rpcerrorlist.UsernameInvalidError:
+                        await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
+                        break
+                    except Exception as eee:
+
+                        await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+    الخطأ :
+    {str(eee)}''')
+                        if "A wait of" in str(eee):
+                            break
+                else:
+                    pass
+                trys += 1
+
+                await asyncio.sleep(8)
+            trys = ""
+            isclaim.clear()
+            isclaim.append("off")
+            await sedthon.send_message(event.chat_id, "تم الانتهاء من التثبيت التلقائي")
+        if msg[0] == "يدوي":  # تثبيت يدوي يوزر قناة
+            await event.edit(f"حسناً سأحاول تثبيت `{username}` على `{ch}` !")
+            msg = ("".join(event.text.split(maxsplit=1)[1:])).split(" ", 1)
+            username = str(msg[0])
+            ch = str(msg[1])
+            try:
+                await sedthon(functions.channels.UpdateUsernameRequest(
+                    channel=ch, username=username))
+                await event.client.send_message(event.chat_id, f'''
+    تم صيد (@{username}) !
+    سـيـدثـون : @Sedthon
+    ''')
+            except telethon.errors.rpcerrorlist.UsernameInvalidError:
+                await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
+            except Exception as eee:
+                await sedthon.send_message(event.chat_id, f'''خطأ مع {username}
+    الخطأ :
+    {str(eee)}''')
+
+    else:
+        await event.edit("يجب الدفع لاستعمال هذا الامر !")
