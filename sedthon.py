@@ -646,8 +646,9 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.البنك"))
 async def _(event):
-    start = datetime.now()
-    end = datetime.now()
+    start = datetime.datetime.now()
+    await event.edit("جارٍ...")
+    end = datetime.datetime.now()
     res = (end - start).microseconds / 1000
     await event.edit(f"""
 `-- -- -- -- -- -- -- -- -- --`
