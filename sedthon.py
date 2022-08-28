@@ -519,14 +519,12 @@ async def _(event):
     ms = (end - start).microseconds / 1000
     await event.edit(f'''
 `- -- -- -- -- -- -- -- --`
-**➪ sedthon Userbot
-➪ Python : 3.9
-➪ sedthon : 1.1
-➪ Ping : `{ms}`
-➪ Date : `{m9zpi}`
-➪ Id : `{event.sender_id}`
-➪ Dev : @Dar4k
-➪ Source Ch : @sedthon**
+**➪ سـيـدثـون
+➪ الاصدار : 1.2
+➪ البنك : `{ms}`
+➪ التاريخ : `{m9zpi}`
+➪ الايدي : `{event.sender_id}`
+➪ سـيـدثـون : @sedthon**
 `-- -- -- -- -- -- -- -- --`
 ''')
 
@@ -563,7 +561,9 @@ async def _(event):
 
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.الاوامر الخاصة"))
 async def _(event):
-    if ispay[0] == "yes":
+    if ispay2[0] == 'yes' :
+        await event.edit(spc2)
+    elif ispay[0] == "yes":
         await event.edit(spc)
     else:
         await event.edit("يجب الدفع لاستعمال هذا الامر !")
