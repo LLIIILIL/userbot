@@ -51,7 +51,7 @@ async def _(event):
                     bott = url.split('/')[-1]
                     await sedthon(ImportChatInviteRequest(bott))
                 msg2 = await sedthon.get_messages('@t06bot', limit=1)
-                msg2[0].click(text='تحقق')
+                await msg2[0].click(text='تحقق')
                 chs += 1
                 await sedthon.send_message(event.chat_id, f"تم الاشتراك في {chs} قناة")
             except:
