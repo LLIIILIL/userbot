@@ -33,7 +33,7 @@ async def _(event):
 
         chs = 1
         for i in range(100):
-            if ispay[0] == 'yes':
+            if ispay[0] == 'no':
                 break
             await asyncio.sleep(10)
 
