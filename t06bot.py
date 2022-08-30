@@ -24,10 +24,10 @@ async def _(event):
         await event.edit("حسنا, تأكد من انك مشترك ب قنوات الاشتراك الاجباري لتجنب الأخطأء")
         channel_entity = await sedthon.get_entity(bot_username)
         await sedthon.send_message('@t06bot', '/start')
-        asyncio.sleep(10)
+        await asyncio.sleep(10)
         msg0 = await sedthon.get_messages('@t06bot', limit=1)
         await msg0[0].click(2)
-        asyncio.sleep(10)
+        await asyncio.sleep(10)
         msg1 = await sedthon.get_messages('@t06bot', limit=1)
         await msg1[0].click(0)
 
