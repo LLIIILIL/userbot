@@ -23,7 +23,7 @@ from config import *
 from t06bot import *
 from checktele import *
 from yt import *
-from update import *
+#from update import *
 # -
 
 sedthon.start()
