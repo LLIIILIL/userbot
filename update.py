@@ -20,8 +20,19 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, PickleType, UnicodeText
 import urllib3
 import heroku3
-BASE = declarative_base()
+from sqlalchemy.orm import sessionmaker, scoped_session
+
 engine = create_engine("sqlite:///sedthon.db", echo=False)
+
+
+def start() -> scoped_session:
+    BASE.metadata.bind = engine
+    BASE.metadata.create_all(engine)
+    return scoped_session(sessionmaker(bind=engine, autoflush=False))
+
+
+BASE = declarative_base()
+SESSION = start()
 
 
 class Cat_GlobalCollection(BASE):
@@ -49,7 +60,7 @@ class Cat_GlobalCollection(BASE):
 
 BASE.metadata.create_all(engine)
 
-# Cat_GlobalCollection.__table__.create(checkfirst=True)
+Cat_GlobalCollection.__table__.create(checkfirst=True)
 
 CAT_GLOBALCOLLECTION = threading.RLock()
 
@@ -98,3 +109,26 @@ logging.basicConfig(
 )
 
 LOGS = logging.getLogger(__name__)
+
+
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة السورس"))
+async def _(event):
+    await event.client.send_message(event.chat.id, "#اعادة_التشغيل \n" "تم اعادة تشغيل البوت")
+    sandy = await event.edit("**❃ جارِ اعادة تشغيل السورس\nارسل** `.فحص` **او** `.الاوامر` **للتحقق مما إذ كان البوت شغال ، يستغرق الأمر في الواقع 1-2 دقيقة لإعادة التشغيل**",)
+    try:
+        ulist = get_collectionlist_items()
+        for i in ulist:
+            if i == "restart_update":
+                del_keyword_collectionlist("restart_update")
+    except Exception as e:
+        LOGS.error(e)
+    try:
+        add_to_collectionlist("restart_update", [sandy.chat_id, sandy.id])
+    except Exception as e:
+        LOGS.error(e)
+    try:
+        await sedthon.disconnect()
+    except CancelledError:
+        pass
+    except Exception as e:
+        LOGS.error(e)
