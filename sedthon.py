@@ -860,9 +860,9 @@ async def update(event):
     await sedthon.disconnect()
     await sedthon.send_message("me", "`اكتملت اعادة تشغيل السورس !`")
 
-'''@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
+@sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.test"))
 async def _(event):
     await event.edit("Working !")
-'''
+
 print("- sedthon Userbot Running ..")
 sedthon.run_until_disconnected()
