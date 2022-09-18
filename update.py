@@ -1,16 +1,7 @@
 # This file didn't used in the userbot because it has error
 import threading
-import asyncio
-import contextlib
-import os
-import sys
 from asyncio import CancelledError
-import heroku3
-import urllib3
-from git import Repo
-from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from telethon import events
-from sqlalchemy import distinct, func
 from sqlalchemy.ext.declarative import declarative_base
 import logging
 from asyncio import CancelledError
