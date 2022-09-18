@@ -105,7 +105,7 @@ LOGS = logging.getLogger(__name__)
 @sedthon.on(events.NewMessage(outgoing=True, pattern=r"\.اعادة السورس"))
 async def _(event):
     await event.client.send_message(event.chat.id, "#اعادة_التشغيل \n" "تم اعادة تشغيل البوت")
-    sandy = await event.edit("**❃ جارِ اعادة تشغيل السورس\nارسل** `.فحص` **او** `.الاوامر` **للتحقق مما إذ كان البوت شغال ، يستغرق الأمر في الواقع 1-2 دقيقة لإعادة التشغيل**",)
+    sandy = await event.edit("اصبر دقيقتين حبي",)
     try:
         ulist = get_collectionlist_items()
         for i in ulist:
