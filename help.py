@@ -7,9 +7,9 @@ commands = '''
 '''
 soursce = '''
 `- -- -- -- -- -- -- -- --`
-**Sedthon source is working ⚡
-Dev : @Dar4k
-Source Ch : @Sedthon**
+**source Toby Team is working ⚡
+Dev : @iiit2
+Source Ch : @ZZZZ7LZ**
 `-- -- -- -- -- -- -- -- --`
 '''
 trans = '''
