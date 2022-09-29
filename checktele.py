@@ -228,7 +228,7 @@ async def _(event):
                         channel=ch, username=username))
                     await event.client.send_message(event.chat_id, f'''
     تم صيد (@{username}) !
-    سـيـدثـون : @Sedthon
+    تـيم تـوبي : @ZZZZ7LZ
     ''')
                     break
                 except telethon.errors.rpcerrorlist.UsernameInvalidError:
@@ -321,7 +321,7 @@ async def _(event):
                     channel=ch, username=username))
                 await event.client.send_message(event.chat_id, f'''
     تم صيد (@{username}) !
-    سـيـدثـون : @Sedthon
+    تـيم تـوبي : @ZZZZ7LZ
     ''')
             except telethon.errors.rpcerrorlist.UsernameInvalidError:
                 await event.client.send_message(event.chat_id, f"مبند `{username}` ❌❌")
