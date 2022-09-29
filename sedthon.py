@@ -570,12 +570,12 @@ async def _(event):
     end = datetime.datetime.now()
     ms = (end - start).microseconds / 1000
     await event.edit(f'''
-**☆ سـيـدثـون سـورس
+**☆سورس تـوبي تـيم  
 ☆ الاصدار : 1.2
 ☆ البنك : `{ms}`
 ☆ التاريخ : `{m9zpi}`
 ☆ الايدي : `{event.sender_id}`
-☆ سـيـدثـون : @sedthon**
+☆ تـوبي تـيم : @ZZZZ7LZ**
 ''')
 
 
@@ -669,7 +669,7 @@ async def _(event):
     photo = await sedthon.get_profile_photos(DEVS[0])
     await sedthon.send_file(event.chat_id, photo, caption=f'''
     The best !
-      - @Dar4k
+      - @IIIT2
 ''', reply_to=event)
 
 
@@ -678,7 +678,7 @@ async def _(event):
     photo = await sedthon.get_profile_photos(DEVS[0])
     await sedthon.send_file(event.chat_id, photo, caption=f'''
     The best !
-      - @Dar4k
+      - @IIIT2
 ''', reply_to=event)
 
 
@@ -687,7 +687,7 @@ async def _(event):
     photo = await sedthon.get_profile_photos(DEVS[0])
     await sedthon.send_file(event.chat_id, photo, caption=f'''
     The best !
-      - @Dar4k
+      - @IIIT2
 ''', reply_to=event)
 
 
@@ -696,7 +696,7 @@ async def _(event):
     photo = await sedthon.get_profile_photos(DEVS[0])
     await sedthon.send_file(event.chat_id, photo, caption=f'''
     The best !
-      - @Dar4k
+      - @IIIT2
 ''', reply_to=event)
 
 
