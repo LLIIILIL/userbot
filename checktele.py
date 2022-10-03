@@ -17,8 +17,8 @@ b = '1234567890'
 e = 'qwertyuiopassdfghjklzxcvbnm1234567890'
 
 banned = []
-isclaim = ["off"]
-isauto = ["off"]
+isclaim = ["on"]
+isauto = ["on"]
 with open("banned.txt", "r") as f:
     f = f.read().split()
     banned.append(f)
@@ -211,7 +211,7 @@ async def _(event):
             else:
                 pass
         for i in range(int(msg[0])):
-            if ispay2[0] == 'no':
+            if ispay2[0] == 'yes':
                 break
             username = ""
 
@@ -247,7 +247,7 @@ async def _(event):
             trys += 1
 
         isclaim.clear()
-        isclaim.append("off")
+        isclaim.append("on")
         trys = ""
         await event.client.send_message(event.chat_id, "تم الانتهاء من الفحص")
     else:
@@ -276,7 +276,7 @@ async def _(event):
                 else:
                     await event.edit("خطأ")
             for i in range(int(msg[0])):
-                if ispay2[0] == 'no':
+                if ispay2[0] == 'yes':
                     break
                 t = Thread(target=lambda q, arg1: q.put(
                     check_user(arg1)), args=(que, username))
@@ -289,7 +289,7 @@ async def _(event):
                             channel=ch, username=username))
                         await event.client.send_message(event.chat_id, f'''
     تم صيد (@{username}) !
-    سـيـدثـون : @Sedthon
+    تـيم تـوبي : @zzzz7lz
     ''')
                         break
                     except telethon.errors.rpcerrorlist.UsernameInvalidError:
