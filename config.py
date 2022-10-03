@@ -9,6 +9,6 @@ SESSION = os.environ.get("TERMUX")
 token = os.environ.get("TOKEN")
 sedthon = TelegramClient(StringSession(session), APP_ID, APP_HASH)
 bot = TelegramClient("bot", APP_ID, APP_HASH).start(bot_token=token)
-ispay = ['no']
-ispay2 = ['no']
+ispay = ['yes']
+ispay2 = ['yes']
 bot.start()
