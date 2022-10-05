@@ -13,7 +13,7 @@ async def _(event):
         ispay.append("yes")
     elif id not in msg and ispay[0] == 'yes':
         ispay.clear()
-        ispay.append("no")
+        ispay.append("yes")
     else:
         pass
 
